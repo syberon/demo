@@ -1,0 +1,48 @@
+.more-projects {
+    margin-bottom: 125px;
+    @media (max-width: 1920px) {
+        margin-bottom: 75px;
+    }
+    @media (max-width: 1499px) {
+        margin-bottom: 50px;
+    }
+    @media (max-width: 1199px) {
+        margin-bottom: 30px;
+    }
+
+    &.basic-direction .basic-direction-content-wrapper .basic-direction-item .basic-direction-item-wrapper .pic {
+        position: relative;
+
+        &::after {
+            display: block;
+            content: '';
+            /* 16:9 aspect ratio */
+            padding-bottom: 56.25%;
+        }
+    }
+
+    &.basic-direction .basic-direction-content-wrapper .basic-direction-item .basic-direction-item-wrapper .pic img {
+        // height: 260px;
+        object-fit: cover;
+
+        /* Image should match parent box size */
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+    }
+
+    .basic-direction-title {
+        font-weight: 600;
+        font-size: 2rem;
+        line-height: 1.35;
+        margin-bottom: 30px;
+        @media (max-width: 1799px) {
+            font-size: 1.8rem;
+        }
+        @media (max-width: 1299px) {
+            font-size: 1.6rem;
+        }
+    }
+}

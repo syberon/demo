@@ -1,0 +1,147 @@
+<?
+$this->inlineScript()->appendScript("window.modules.push('cms/modules/catalog/cart')");
+$this->headTitle('Корзина покупателя');
+?>
+
+<h3>Корзина покупателя</h3>
+<br>
+
+<div id="cartApp">
+    <div v-if="!items">
+        <b>Корзина пуста</b>
+    </div>
+    <table class="table table-hover cart-list-table">
+        <colgroup>
+            <col class="col-pic"/>
+            <col class="col-title"/>
+            <col class="col-count"/>
+            <col class="col-price"/>
+            <col class="col-action"/>
+        </colgroup>
+        <tr v-for="(item, token) in items">
+            <td class="pic">
+                <img v-if="item.picture" :src="item.picture" class="img-fluid">
+                <img v-else src="https://dummyimage.com/300x400/ddd/000.jpg&text=No+photo" class="img-fluid">
+            </td>
+            <td class="title">
+                <a :href="item.url">{{ item.info.name }}</a>
+                <ul class="properties" v-if="item.properties">
+                    <li v-for="(value, property) in item.properties">{{ property }}: {{ value }} </li>
+                </ul>
+            </td>
+            <td class="count">
+                <input title="Количество" type="number" inputmode="numeric" pattern="[0-9]*" v-model=item.count min="1" :max="item.stock.count">
+            </td>
+            <td class="price">{{ item.price * item.count }} руб.</td>
+            <td class="action">
+                <a href="Javascript:void(0)" @click="deleteItem(token)"><i class="fas fa-times"></i></a>
+            </td>
+        </tr>
+    </table>
+    <? if ($this->config()['catalog']['options']['use-cart-coupons']): ?>
+        <div class="cart-coupon">
+            <a class="btn btn-light" href="Javascript:void(0)" v-if="!use_coupon && count" @click="use_coupon = true">Использовать купон</a>
+            <div v-if="use_coupon">
+                <input type="text" class="form-control coupon-code" placeholder="Код купона" name="coupon" v-model="input.coupon"/>
+                <a class="btn btn-light" href="Javascript:void(0)" @click="applyCoupon">Применить</a>
+            </div>
+        </div>
+        <div class="active-coupon" v-if="coupon">
+            <div>Скидка по введенному купону: {{ coupon.discount }}{{ coupon.discount_type == 'sum' ? ' руб.' : '%' }}</div>
+        </div>
+    <? endif ?>
+    <div class="cart-total">
+        <div v-if="discount && count">Ваша скидка по сумме заказа: {{ discount }}%</div>
+        <div v-if="discount_sum">Общая сумма скидки: {{ discount_sum + (+coupon_discount)}} руб.</div>
+        <div v-if="count">ИТОГО: {{ total_price - discount_sum - (+coupon_discount)}} руб.</div>
+    </div>
+    <br>
+    <div class="cart-buttons" v-if="!show_order_form && count">
+        <a class="btn btn-success" href="Javascript:void(0);" @click="show_order_form = true">Оформить заказ</a>
+        <a class="btn btn-danger" href="Javascript:void(0);" @click="clearCart()">Очистить корзину</a>
+    </div>
+
+    <div class="row order-block" v-if="show_order_form">
+        <div class="col-md-6 text">
+            <?= $this->content('catalog/order') ?>
+        </div>
+        <div class="col-md-6 form">
+            <? if (!$this->user()->hasIdentity()): ?>
+                <div class="col-12 text">
+                    Для оформления заказа вы должны быть <a href="<?= $this->url('user/login') ?>">авторизованы</a> на сайте. Если у вас ещё нет учетной записи, то пройдите процедуру <a href="<?= $this->url('user/register')?>">регистрации</a>.
+                    <br><br>
+                    <div>
+                        <ul class="nav nav-tabs" role="tablist">
+                            <li class="nav-item">
+                                <a class="nav-link active" data-toggle="tab" href="#login" role="tab">Авторизация</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" data-toggle="tab" href="#register" role="tab">Регистрация</a>
+                            </li>
+                        </ul>
+                        <div class="tab-content">
+                            <div class="tab-pane fade show active" id="login" role="tabpanel">
+                                <?= $this->widgetLogin($this->url('catalog/cart', [], ['fragment' => 'order'])) ?>
+                            </div>
+                            <div class="tab-pane fade" id="register" role="tabpanel">
+                                <?= $this->widgetRegister() ?>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            <? else: ?>
+                <? $this->orderForm->prepare() ?>
+                <?= $this->form()->openTag($this->orderForm) ?>
+                <div class="row">
+                    <div class="col-md-6">
+                        <?= $this->formRow($this->orderForm->get('display_name')) ?>
+                    </div>
+                    <div class="col-md-6">
+                        <?= $this->formRow($this->orderForm->get('email')) ?>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <?= $this->formRow($this->orderForm->get('payment')) ?>
+                    </div>
+                    <div class="col-md-6">
+                        <?= $this->formRow($this->orderForm->get('delivery')) ?>
+                    </div>
+                </div>
+
+                <?= $this->formRow($this->orderForm->get('phone')) ?>
+
+                <div class="delivery-block">
+                    <?= $this->formCollection($this->orderForm->get('delivery-block')) ?>
+                </div>
+                <div v-if="show_delivery_address">
+                    <div class="courier-block" v-if="input.price_delivery || success">
+                        <div class="price">
+                            <img src="/img/cdek.jpg"> - <span v-if="input.price_delivery">{{ input.price_delivery }} руб.</span><span v-else>Бесплатно</span> (от {{ delivery.min }} до {{ delivery.max }} дней)
+                        </div>
+                    </div>
+                    <div class="courier-block" v-if="input.price_delivery == -1 && input.city_id && !delivery.selfpickup">
+                        <div class="error">
+                            Доставка в указанный вами город невозможна
+                        </div>
+                    </div>
+                    <div class="courier-block" v-if="!input.price_delivery && !input.city_id">
+                        <div class="warning">
+                            Укажите город для расчета стоимости доставки
+                        </div>
+                    </div>
+                    <div class="courier-block" v-if="delivery.selfpickup">
+                        <div class="error">
+                            В выбранном вами городе доступен только самовывоз. Поменяйте способ доставки на "Самовывоз" или укажите другой город
+                        </div>
+                    </div>
+                </div>
+                <?= $this->formRow($this->orderForm->get('save_delivery')) ?>
+                <?= $this->formRow($this->orderForm->get('description')) ?>
+                <?= $this->formRow($this->orderForm->get('submit')) ?>
+                <?= $this->form()->closeTag() ?>
+            <? endif ?>
+        </div>
+    </div>
+
+</div>

@@ -1,0 +1,37 @@
+/*
+ * Copyright (c) 2019.
+ *
+ * @author Syber
+ */
+
+.admin-slider-items {
+    .item {
+        &.disabled {
+            border: #cc0000 2px solid;
+        }
+        cursor: move;
+        padding: 10px;
+        border: #ddd 1px solid;
+        margin-bottom: 10px;
+
+        .title {
+            margin-bottom: 15px;
+        }
+        .buttons {
+            text-align: right;
+        }
+    }
+}
+
+.admin-sliders-list {
+    .list {
+        colgroup {
+            .col-id {
+                width: 100px;
+            }
+            .col-actions {
+                width: 60px;
+            }
+        }
+    }
+}

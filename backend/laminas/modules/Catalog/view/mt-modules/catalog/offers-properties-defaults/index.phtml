@@ -1,0 +1,53 @@
+<?
+/**
+ * Copyright (c) 2019.
+ *
+ * @author Syber
+ */
+
+$this->inlineScript()->appendScript("window.modules.push('cms/modules/catalog/offers-properties-defaults.sortable')");
+$this->headTitle("Список значений для свойства торгового предложения")
+?>
+
+<div id="actions-submenu">
+    <h4>Действия</h4>
+    <div class="list-group">
+        <a class="list-group-item" href="<?= $this->url('catalog/offers-properties-defaults/add') ?>"><i class="fas fa-plus"></i> Добавить значение</a>
+    </div>
+</div>
+
+<div class="admin-content-block">
+    <h3>Список значений для свойства торгового предложения "<?= $this->property->name ?>"</h3>
+    <br>
+    <div class="admin-buttons">
+        <a class="btn btn-light" href="<?= $this->url('catalog/offers-properties') ?>">Вернуться назад</a>
+    </div>
+
+
+    <table class="table table-hover table-striped properties-list">
+        <colgroup>
+            <col class="col-handle"/>
+            <col class="col-value"/>
+            <col class="col-action"/>
+        </colgroup>
+        <thead>
+            <tr>
+                <th></th>
+                <th>Значение</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody class="items-sortable">
+            <? foreach ($this->records as $property): ?>
+                <tr class="item" data-id="<?= $property->id ?>">
+                    <td class="handle"><i title="Поменять порядок" class="fas fa-exchange-alt fa-rotate-90"></i></td>
+                    <td><?= $property->value ?></td>
+                    <td>
+                        <a href="<?= $this->url('catalog/offers-properties-defaults/edit', ['id' => $property->id]) ?>" title="Изменить"><i class="fas fa-pen icon-green"></i></a>
+                        <a href="<?= $this->url('catalog/offers-properties-defaults/delete', ['id' => $property->id]) ?>" title="Удалить" class="confirm"><i class="fas fa-times icon-red"></i></a>
+                    </td>
+                </tr>
+            <? endforeach ?>
+        </tbody>
+    </table>
+</div>

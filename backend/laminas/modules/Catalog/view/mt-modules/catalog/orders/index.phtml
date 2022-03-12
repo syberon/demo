@@ -1,0 +1,50 @@
+<?
+$this->headTitle('История заказов');
+?>
+
+<h2>История заказов</h2>
+<br>
+
+<table class="table table-hover table-bordered user-orders">
+    <colgroup>
+        <col class="col-id"/>
+        <col class="col-items"/>
+        <col class="col-date"/>
+        <col class="col-count"/>
+        <col class="col-price"/>
+        <col class="col-price-delivery"/>
+        <col class="col-status"/>
+    </colgroup>
+    <thead class="thead-light">
+        <tr>
+            <th>№ заказа</th>
+            <th>Состав заказа</th>
+            <th>Дата</th>
+            <th>Кол-во товаров</th>
+            <th>Сумма, руб</th>
+            <th>Доставка, руб</th>
+            <th>Статус</th>
+        </tr>
+    </thead>
+
+    <? foreach ($this->orders as $order): ?>
+        <tr class="order-row">
+            <td><a href="<?= $this->url('catalog/orders/view', ['id' => $order->id]) ?>"><i class="fas fa-angle-double-right"></i> <?= $order->id ?></a></td>
+            <td>
+                <? foreach ($order->items as $item): ?>
+                    <div class="item"><?= $item->count ?> x <?= $item->name ?></div>
+                <? endforeach ?>
+            </td>
+            <td><?= $this->date($order->date, "Y.m.d H:i:s") ?></td>
+            <td><?= $order->count ?></td>
+            <td><?= $order->price ?></td>
+            <td><?= $order->price_delivery ?></td>
+            <td>
+                <div class="status status_<?= $order->status ?>"><?= $this->status[$order->status] ?></div>
+                <? if ($order->status == 1): ?>
+                    <a class="btn btn-sm btn-success btn-pay" href="<?= $this->url('catalog/orders/pay', ['id' => $order->id]) ?>">Оплатить on-line</a>
+                <? endif ?>
+            </td>
+        </tr>
+    <? endforeach ?>
+</table>

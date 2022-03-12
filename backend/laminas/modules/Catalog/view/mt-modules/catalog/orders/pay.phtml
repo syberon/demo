@@ -1,0 +1,115 @@
+<?
+$this->inlineScript()->appendScript("window.modules.push('cms/modules/catalog/orders.pay')");
+?>
+
+<h2>Оплата заказа №<?= $this->order->id ?> от <?= $this->date($this->order->date) ?></h2>
+
+<div id="payApp">
+    <div class="admin-buttons">
+        <a class="btn btn-sm btn-light" href="<?=$this->url('catalog/orders')?>">Вернуться назад</a>
+    </div>
+    <table class="table table-hover pay-client-table">
+        <tr>
+            <td>Ф.И.О.</td>
+            <td><?= $this->order->display_name ?></td>
+        </tr>
+        <tr>
+            <td>Контактный телефон</td>
+            <td><?= $this->order->phone ?></td>
+        </tr>
+        <tr>
+            <td>E-mail</td>
+            <td><a href="mailto:<?= $this->order->email ?>"><?= $this->order->email ?></a></td>
+        </tr>
+        <tr>
+            <td>Способ доставки</td>
+            <td><?= $this->delivery_method[$this->order->delivery] ?></td>
+        </tr>
+        <? if ($this->order->delivery == 1): ?>
+            <tr>
+                <td>Город</td>
+                <td><?= $this->order->city ?></td>
+            </tr>
+            <tr>
+                <td>Индекс</td>
+                <td><?= $this->order->zip_code ?></td>
+            </tr>
+            <tr>
+                <td>Адрес</td>
+                <td><?= $this->order->address ?></td>
+            </tr>
+        <? endif ?>
+        <tr>
+            <td>Метод оплаты</td>
+            <td>
+                <?= $this->payment_method[$this->order->payment] ?>
+                <? if ($this->order->status == 1): ?>
+                    <p><b><a href="<?= $this->url('catalog/orders/pay', ['id' => $this->order->id]) ?>">Оплатить</a></b></p>
+                <? endif ?>
+            </td>
+
+        </tr>
+        <tr>
+            <td>Комментарий к заказу</td>
+            <td><?= $this->order->description ?></td>
+        </tr>
+        <tr>
+            <td>Статус заказа</td>
+            <td><span class="status status_<?= $this->order->status ?>"><?= $this->order_status[$this->order->status] ?></span></td>
+        </tr>
+
+    </table>
+
+    <table class="table table-hover table-bordered cart-list">
+        <tr>
+            <th>Наименование</th>
+            <th>Артикул</th>
+            <th>Код</th>
+            <th>Количество</th>
+            <th>Цена</th>
+        </tr>
+        <? foreach ($this->order->items as $item): ?>
+            <tr>
+                <td>
+                    <div class="name"><a href="<?= $this->url('catalogrouter', ['item' => $item->id]) ?>"><?= $item->name ?></a></div>
+                    <? if ($item->properties): ?>
+                        <div class="params">
+                            <? foreach ($item->properties as $property => $value) :?>
+                                <div class="param"><?= $property ?>: <?= $value ?></div>
+                            <? endforeach ?>
+                        </div>
+                    <? endif ?>
+                </td>
+                <td>
+                    <?= $item->article ?>
+                </td>
+                <td>
+                    <?= $item->offer->code ?>
+                </td>
+                <td>
+                    <input class="form-control" type="text" value="<?= $item->count ?>" readonly>
+                </td>
+                <td>
+                    <?= $item->price ?> руб.
+                </td>
+            </tr>
+        <?endforeach?>
+    </table>
+
+    <div class="pay-sum">
+        Стоимость доставки: <?= $this->order->price_delivery ?><br/>
+        Сумма к оплате: <?= ($this->order->price + $this->order->price_delivery) ?> руб.
+    </div>
+    <? if ($this->order->payment == 1 && $this->order->status == 1): ?>
+        <div id="payApp">
+            <br>
+            <p>
+                <a href="Javascript:void(0)" @click="makePayment" class="btn btn-success">ОПЛАТИТЬ ОН-ЛАЙН</a>
+            </p>
+            <div class="pay-form">
+                <?= $this->form($this->payForm) ?>
+            </div>
+        </div>
+    <? endif ?>
+</div>
+

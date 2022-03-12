@@ -1,0 +1,20 @@
+<?
+/**
+ * Copyright (c) 2019.
+ *
+ * @author Syber
+ */
+
+$this->inlineScript()->appendScript("cms_modules.push('cms/plugins/common.seourl')");
+$this->headTitle("Добавление новой группы")
+?>
+
+<div class="admin-content-block">
+    <h3>Добавление новой группы</h3>
+
+    <div class="admin-buttons">
+        <a class="btn btn-light" href="<?= $this->url('catalog/groups') ?>">Вернуться назад</a>
+    </div>
+
+    <?= $this->form($this->form) ?>
+</div>

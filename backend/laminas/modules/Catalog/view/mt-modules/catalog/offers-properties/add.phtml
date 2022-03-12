@@ -1,0 +1,20 @@
+<?
+/**
+ * Copyright (c) 2019.
+ *
+ * @author Syber
+ */
+
+$this->inlineScript()->appendScript("window.modules.push('cms/plugins/seourl')");
+$this->headTitle("Добавление нового свойства торгового предложения")
+?>
+
+<div class="admin-content-block">
+    <h3>Добавление нового свойства торгового предложения</h3>
+
+    <div class="admin-buttons">
+        <a class="btn btn-light" href="<?= $this->url('catalog/offers-properties') ?>">Вернуться назад</a>
+    </div>
+
+    <?= $this->form($this->form) ?>
+</div>

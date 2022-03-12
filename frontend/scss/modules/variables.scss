@@ -1,0 +1,29 @@
+/*!
+ * Copyright (c) 2019.
+ *
+ * @author Syber
+ */
+
+$container-max-widths: (
+    sm: 540px,
+    md: 720px,
+    lg: 960px,
+    xl: 1860px
+);
+
+$main-font-color: rgb(80, 80, 80);
+$main-basic: #79629d;
+$main-basic-light: rgb(208, 206, 220);
+$main-basic-dark: #533682;
+$main-basic-mat: #8e8aa7;
+$blue: #00A0E3;
+$grey: #656565;
+$white: #ffffff;
+$black: #000000;
+
+//Breakpoints
+$max: 2560px;
+$hd: 1920px;
+$xxl: 1399px;
+$xl: 1199px;
+$lg: 992px;

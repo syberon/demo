@@ -1,0 +1,72 @@
+.portfolio-content--inner {
+    margin-bottom: 70px;
+    @media (max-width: 991px) {
+        margin-bottom: 50px;
+    }
+    @media (max-width: 767px) {
+        margin-bottom: 40px;
+        margin-top: 50px;
+    }
+    @media (max-width: 575px) {
+        margin-top: 20px;
+    }
+
+    .portfolio-item {
+        .portfolio-item-content {
+            @media (max-width: 1199px) {
+                flex-direction: column-reverse;
+            }
+
+            .description {
+                @media (max-width: 1199px) {
+                    margin-top: 20px;
+                }
+
+                .project-info {
+                    @media (min-width: 768px) and (max-width: 1199px) {
+                        width: 100%;
+                        padding-right: 0;
+                    }
+
+                    .text {
+                        height: 700px;
+                        max-height: 700px;
+                        @media (max-width: 1920px) {
+                            height: 700px;
+                            max-height: 700px;
+                        }
+                        @media (max-width: 1799px) {
+                            height: 600px;
+                            max-height: 620px;
+                        }
+                        @media (max-width: 1699px) {
+                            height: 590px;
+                            max-height: 590px;
+                        }
+                        @media (max-width: 1599px) {
+                            height: 550px;
+                            max-height: 550px;
+                        }
+                        @media (max-width: 1499px) {
+                            height: 530px;
+                            max-height: 530px;
+                        }
+                        @media (max-width: 1399px) {
+                            height: 450px;
+                            max-height: 450px;
+                        }
+                        @media (max-width: 1299px) {
+                            height: 410px;
+                            max-height: 410px;
+                        }
+                        @media (max-width: 991px) {
+                            height: auto;
+                            max-height: unset;
+                            font-size: 1rem;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,33 @@
+<div class="catalog-items-widget">
+    <div class="items">
+        <div class="row">
+            <? foreach ($this->items as $item): ?>
+                    <div class="col-6 col-lg-4 col-xl-3 item">
+                        <a href="<?= $this->url('catalogrouter', ['item' => $item->id]) ?>">
+                            <div class="content">
+                                <div class="pic">
+                                    <? if (isset($item->picture)): ?>
+                                        <img src="<?= $this->htImgUrl($this->uploads()->get($item->picture)->getPublicUrl(), 'catalog-item-list') ?>" class="img-fluid">
+                                    <? else: ?>
+                                        <img src="https://dummyimage.com/300x400/ddd/000.jpg&text=No+photo" class="img-fluid">
+                                    <? endif ?>
+                                </div>
+                                <div class="title"><?= $item->name ?></div>
+                                <div class="price">
+                                    <div class="main">
+                                        <div class="price"><?= $item->price ?> руб.</div>
+                                        <? if ($item->price_sale): ?>
+                                            <div class="price_base"><?= $item->price_base ?> руб.</div>
+                                        <? endif ?>
+                                    </div>
+                                    <? if ($item->price_sale): ?>
+                                        <div class="discount">Скидка: <?= $item->price_discount ?> руб.</div>
+                                    <? endif ?>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+            <? endforeach ?>
+        </div>
+    </div>
+</div>

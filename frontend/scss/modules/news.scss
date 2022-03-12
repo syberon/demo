@@ -1,0 +1,90 @@
+.news.news--index {
+    @media (max-width: 991px) {
+        display: flex;
+        flex-direction: column;
+        .news-block-banner {
+            order: 1;
+            margin-bottom: 20px;
+        }
+        > .basic-direction-title {
+            order: 2;
+        }
+        .news-wrapper {
+            order: 3;
+        }
+    }
+
+    .basic-direction-title {
+        padding-left: 24px;
+        margin-bottom: 60px;
+        @media (max-width: 991px) {
+            padding-left: 20px;
+            margin-bottom: 0;
+        }
+        @media (max-width: 575px) {
+            padding-left: 15px;
+        }
+    }
+
+    .news-wrapper {
+        background-color: white;
+        padding: 40px 10px 30px 24px;
+        margin-bottom: 30px;
+        // position: sticky;
+        // top: 20px;
+        @media (max-width: 1399px) {
+            padding-top: 30px;
+            padding-left: 20px;
+        }
+        @media (max-width: 991px) {
+            background-color: transparent;
+        }
+        @media (max-width: 575px) {
+            padding-left: 15px;
+        }
+
+        .news-item {
+            margin-bottom: 50px;
+            @media (max-width: 1399px) {
+                margin-bottom: 30px;
+            }
+
+            .date {
+                font-size: 0.8rem;
+                line-height: 1.3;
+                color: $main-basic;
+                margin-bottom: 10px;
+                @media (max-width: 767px) {
+                    font-size: 0.9rem;
+                }
+            }
+
+            .title {
+                font-weight: 700;
+                margin-bottom: 20px;
+                @media (max-width: 1399px) {
+                    margin-bottom: 15px;
+                }
+            }
+
+            .basic-link {
+                color: $main-basic;
+                @media (max-width: 767px) {
+                    font-size: 0.9rem;
+                }
+            }
+        }
+
+        .more-link-wrapper {
+            @media (max-width: 767px) {
+                text-align: center;
+            }
+        }
+    }
+
+    .news-block-banner {
+        @media (max-width: 991px) {
+            text-align: center;
+        }
+    }
+}

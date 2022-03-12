@@ -1,0 +1,51 @@
+<?
+/**
+ * Copyright (c) 2019.
+ *
+ * @author Syber
+ */
+
+$this->inlineScript()->appendScript("window.modules.push('cms/modules/catalog/groups.sortable')");
+$this->headTitle("Группы товаров")
+?>
+
+<div class="admin-content-block">
+    <h3>Группы товаров</h3>
+    <br>
+    <div id="actions-submenu">
+        <h4>Действия</h4>
+        <div class="list-group">
+            <a class="list-group-item" href="<?= $this->url('catalog/groups/add') ?>"><i class="fas fa-plus"></i> Добавить группу</a>
+        </div>
+    </div>
+
+    <table class="table table-hover table-striped groups-list">
+        <colgroup>
+            <col class="col-handle"/>
+            <col class="col-name"/>
+            <col class="col-code"/>
+            <col class="col-action"/>
+        </colgroup>
+        <thead>
+            <tr>
+                <th></th>
+                <th>Название</th>
+                <th>Символный код</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody class="items-sortable">
+            <? foreach ($this->records as $group): ?>
+                <tr class="item" data-id="<?= $group->id ?>">
+                    <td class="handle"><i title="Поменять порядок" class="fas fa-exchange-alt fa-rotate-90"></i></td>
+                    <td><?= $group->name ?></td>
+                    <td><?= $group->code ?></td>
+                    <td>
+                        <a href="<?= $this->url('catalog/groups/edit', ['id' => $group->id]) ?>" title="Изменить"><i class="fas fa-pen icon-green"></i></a>
+                        <a href="<?= $this->url('catalog/groups/delete', ['id' => $group->id]) ?>" title="Удалить" class="confirm"><i class="fas fa-times icon-red"></i></a>
+                    </td>
+                </tr>
+            <? endforeach ?>
+        </tbody>
+    </table>
+</div>

@@ -1,0 +1,190 @@
+<?
+/**
+ * Copyright (c) 2019.
+ *
+ * @author Syber
+ */
+$this->inlineScript()->appendScript("window.modules.push('cms/modules/catalog/items.edit')");
+$this->headTitle("Редактирование товара")
+?>
+
+<script>
+    let init_data = <?= $this->data ?>;
+</script>
+
+<div class="admin-content-block">
+    <h3>Редактирование товара</h3>
+
+    <div class="admin-buttons">
+        <a class="btn btn-light" href="<?= $this->url('catalog/items') ?>">Вернуться назад</a>
+    </div>
+
+    <? $this->form->prepare() ?>
+
+    <div class="item-edit-block" id="itemsEditApp">
+        <ul class="nav nav-tabs" role="tablist">
+            <li class="nav-item">
+                <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#main" type="button" role="tab" >Основные параметры</button>
+            </li>
+            <li class="nav-item">
+                <button class="nav-link" data-bs-toggle="tab" data-bs-target="#properties" type="button" role="tab" >Свойства</button>
+            </li>
+            <li class="nav-item">
+                <button class="nav-link" data-bs-toggle="tab" id="categories-tab" data-bs-target="#categories" type="button" role="tab" >Категории</button>
+            </li>
+            <li class="nav-item">
+                <button class="nav-link" data-bs-toggle="tab" id="pictures-tab" data-bs-target="#pictures" type="button" role="tab" >Изображения</button>
+            </li>
+            <? if (!$this->config()['catalog']['options']['use-offers']): ?>
+                <li class="nav-item">
+                    <button class="nav-link" data-bs-toggle="tab" data-bs-target="#price" type="button" role="tab" >Цена</button>
+                </li>
+                <? if ($this->config()['catalog']['options']['use-stock']): ?>
+                    <li class="nav-item">
+                        <button class="nav-link" data-bs-toggle="tab" data-bs-target="#stock" type="button" role="tab" >Наличие</button>
+                    </li>
+                <? endif ?>
+            <? else: ?>
+                <li class="nav-item">
+                    <button class="nav-link" data-bs-toggle="tab" id="offers-tab"  data-bs-target="#offers" type="button" role="tab">Торговые предложения</button>
+                </li>
+            <? endif ?>
+            <? if ($this->config()['catalog']['options']['use-related']): ?>
+                <li class="nav-item">
+                    <button class="nav-link" data-bs-toggle="tab" id="related-tab"  data-bs-target="#related" type="button" role="tab">Рекомендации</button>
+                </li>
+            <? endif ?>
+        </ul>
+
+        <?= $this->form()->openTag($this->form) ?>
+
+        <div class="tab-content">
+            <div class="tab-pane fade show active" id="main" role="tabpanel">
+                <?= $this->formCollection($this->form->get('main')) ?>
+            </div>
+            <div class="tab-pane fade" id="properties" role="tabpanel">
+                <?= $this->formCollection($this->form->get('properties')) ?>
+            </div>
+            <div class="tab-pane fade" id="categories" role="tabpanel">
+                <table id="categoriesTree" class="table table-hover item-add-categories">
+                    <colgroup>
+                        <col class="col-checkbox"/>
+                        <col/>
+                    </colgroup>
+                    <thead>
+                    <tr>
+                        <th></th>
+                        <th></th>
+                    </tr>
+                    </thead>
+                </table>
+            </div>
+            <div class="tab-pane fade edit-pictures-pane" id="pictures" role="tabpanel">
+                <?= $this->formCollection($this->form->get('pictures')) ?>
+                <div class="item-edit-pictures">
+                    <div class="item" v-for="picture in pictures" :data-id="picture.id">
+                        <a class="icon-delete" href="#" @click="deletePicture(picture.id)"><i class="fas fa-times-circle"></i></a>
+                        <img :src="picture.processed" src=""/>
+                    </div>
+                </div>
+            </div>
+            <? if (!$this->config()['catalog']['options']['use-offers']): ?>
+                <div class="tab-pane fade" id="price" role="tabpanel">
+                    <?= $this->formCollection($this->form->get('price')) ?>
+                </div>
+                <? if ($this->config()['catalog']['options']['use-stock']): ?>
+                    <div class="tab-pane fade" id="stock" role="tabpanel">
+                        <?= $this->formCollection($this->form->get('stock')) ?>
+                    </div>
+                <? endif ?>
+            <? else: ?>
+                <div class="tab-pane fade edit-offers-pane" id="offers" role="tabpanel">
+                    <? if (count($this->offers)): ?>
+                        <table class="table table-hover table-offers">
+                            <colgroup>
+                                <col class="col-code"/>
+                                <col class="col-name"/>
+                                <col class="col-active"/>
+                                <col class="col-price"/>
+                                <col class="col-price-sale"/>
+                                <col class="col-count"/>
+                                <col class="col-action"/>
+                            </colgroup>
+                            <thead>
+                                <tr>
+                                    <th>Штрих-код</th>
+                                    <th>Название</th>
+                                    <th>Активно</th>
+                                    <th>Цена</th>
+                                    <th>Цена со скидкой</th>
+                                    <th>Остаток</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <? foreach ($this->offers as $offer): ?>
+                                    <tr>
+                                        <td><?= $offer->code ?></td>
+                                        <td><?= $offer->name ?></td>
+                                        <td><?= $offer->active ? 'Да' : 'Нет' ?></td>
+                                        <td><?= $offer->price ?></td>
+                                        <td><?= $offer->price_sale ?></td>
+                                        <td><?= $offer->count ?></td>
+                                        <td>
+                                            <a href="<?= $this->url('catalog/offers/edit', ['id' => $offer->id]) ?>" title="Изменить"><i class="fas fa-pen icon-green"></i></a>
+                                            <a href="<?= $this->url('catalog/offers/delete', ['id' => $offer->id]) ?>" title="Удалить" class="confirm"><i class="fas fa-times icon-red"></i></a>
+                                        </td>
+                                    </tr>
+                                <? endforeach ?>
+                            </tbody>
+                        </table>
+                    <? endif ?>
+                    <?= $this->formCollection($this->form->get('offers')) ?>
+
+                </div>
+            <? endif ?>
+            <? if ($this->config()['catalog']['options']['use-related']): ?>
+                <div class="tab-pane fade related-pane" id="related" role="tabpanel">
+                    <table class="table table-hover table-related">
+                        <colgroup>
+                            <col class="col-id"/>
+                            <col class="col-article"/>
+                            <col class="col-name"/>
+                            <col class="col-active"/>
+                            <col class="col-action"/>
+                        </colgroup>
+                        <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Артикул</th>
+                            <th>Название</th>
+                            <th>Активно</th>
+                            <th></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                            <tr v-for="item in related">
+                                <td>{{ item.id }}</td>
+                                <td>{{ item.article }}</td>
+                                <td><a :href="item.link" target="_blank">{{ item.name }}</a></td>
+                                <td>{{ item.active ? 'Да' : 'Нет' }}</td>
+                                <td>
+                                    <a href="Javascript:void(0)" @click="deleteRelated(item.related_id)" title="Удалить"><i class="fas fa-times icon-red"></i></a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <div class="buttons">
+                        <a class="btn btn-success" href="Javascript:void(0)" @click="addRelated">Добавить</a>
+                    </div>
+                </div>
+            <? endif ?>
+
+        </div>
+
+        <?= $this->formRow($this->form->get('submit')) ?>
+
+        <?= $this->form()->closeTag($this->form) ?>
+    </div>
+</div>

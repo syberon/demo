@@ -1,0 +1,88 @@
+/*
+ * Copyright (c) 2019.
+ *
+ * @author Syber
+ */
+
+.feed-attachments {
+    margin-top: 30px;
+    .item {
+        position: relative;
+        margin-bottom: 30px;
+        a.btn {
+            position: absolute;
+            bottom: 10px;
+            right: 25px;
+        }
+    }
+}
+
+.feed-items {
+    .item {
+        margin-bottom: 30px;
+    }
+}
+
+.feed-sortable {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    li {
+        cursor: move;
+        display: flex;
+        justify-content: space-between;
+        margin: 5px 0px;
+        padding: 15px;
+        font-size: 1.2em;
+        line-height: 1.2em;
+        transition: background 0.5s ease;
+        &.ui-state-highlight {
+            height: 50px;
+        }
+
+        &:hover {
+            background: #ddd;
+        }
+        border: 1px solid #c5c5c5;
+        background: #f6f6f6;
+        font-weight: normal;
+        color: #454545;
+    }
+
+    .ui-state-highlight {
+        background: #faf01a;
+    }
+}
+
+.feed-items-manage {
+    colgroup {
+        .col-action {
+            width: 60px;
+        }
+    }
+}
+
+.feed-item-edit-form {
+    fieldset {
+        padding-top: 15px;
+        padding-bottom: 15px;
+        legend {
+            font-size: 1.4rem;
+            font-weight: 600;
+            border-bottom: #545b62 2px solid;
+        }
+    }
+}
+
+.feed-admin-list {
+    .feed-list {
+        colgroup {
+            .col-id {
+                width: 50px;
+            }
+            .col-actions {
+                width: 100px;
+            }
+        }
+    };
+}

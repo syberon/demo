@@ -1,0 +1,23 @@
+<?
+$this->inlineScript()->appendScript("window.modules.push('cms/modules/catalog/orders.pay')");
+?>
+
+<h2>Ваш заказ №<?= $this->order->id ?> успешно оформлен.</h2>
+<br>
+<p>Наш менеджер в ближайшее время свяжется с Вами по указанному при оформлении заказа телефону для подтверждения.</p>
+<br>
+
+<div id="payApp">
+    <div class="pay-sum">Сумма к оплате: <?= $this->order->price + $this->order->price_delivery ?> руб.</div>
+    <? if ($this->order->payment == 1 && $this->order->status == 1): ?>
+        <br>
+        <p>
+            <a href="Javascript:void(0)" @click="makePayment" class="btn btn-success">ОПЛАТИТЬ ОН-ЛАЙН</a>
+        </p>
+        <div class="pay-form">
+            <?= $this->form($this->payForm) ?>
+        </div>
+    <? endif ?>
+
+</div>
+

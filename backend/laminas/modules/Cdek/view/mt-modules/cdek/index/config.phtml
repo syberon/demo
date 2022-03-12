@@ -1,0 +1,59 @@
+<?
+$this->inlineScript()->appendScript("window.modules.push('cms/modules/cdek/config')");
+$this->headTitle("Конфигурация модуля СДЭК");
+?>
+
+<div class="admin-content-block" id="cdekConfigApp">
+    <h3>Конфигурация модуля СДЭК</h3>
+    <br>
+    <?= $this->form()->openTag($this->form) ?>
+    <div class="title">
+        Учетные данные
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            <?= $this->formRow($this->form->get('account')) ?>
+        </div>
+        <div class="col-md-6">
+            <?= $this->formRow($this->form->get('password')) ?>
+        </div>
+    </div>
+    <div class="title">
+        Параметры отправки
+    </div>
+    <div class="row">
+        <div class="col-md-4 sender-city-id">
+            <?= $this->formRow($this->form->get('sender_city_name')) ?>
+            <autocomplete :input="input" :city_name="city_name" @set-active-city="setActiveCity"></autocomplete>
+        </div>
+        <div class="col-md-4">
+            <?= $this->formRow($this->form->get('tariff_id')) ?>
+        </div>
+        <div class="col-md-4">
+            <?= $this->formRow($this->form->get('free_sum')) ?>
+        </div>
+    </div>
+    <div class="title">
+        Параметры места
+    </div>
+    <div class="row">
+        <div class="col-md-3">
+            <?= $this->formRow($this->form->get('parcel_weight')) ?>
+        </div>
+        <div class="col-md-3">
+            <?= $this->formRow($this->form->get('parcel_length')) ?>
+        </div>
+        <div class="col-md-3">
+            <?= $this->formRow($this->form->get('parcel_width')) ?>
+        </div>
+        <div class="col-md-3">
+            <?= $this->formRow($this->form->get('parcel_height')) ?>
+        </div>
+    </div>
+
+    <?= $this->formRow($this->form->get('submit')) ?>
+
+    <?= $this->formRow($this->form->get('sender_city_id')) ?>
+
+    <?= $this->form()->closeTag() ?>
+</div>

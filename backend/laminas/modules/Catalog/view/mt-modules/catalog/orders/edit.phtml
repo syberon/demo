@@ -1,0 +1,82 @@
+
+<?
+$this->headTitle("Редактирование заказа");
+$this->inlineScript()->appendScript("window.modules.push('cms/modules/catalog/orders.edit')");
+?>
+
+<h2>Редактирование заказа №<?= $this->order->id ?></h2>
+
+<div class="admin-buttons">
+    <a class="btn btn-sm btn-light" href="<?=$this->url('catalog/orders/list')?>">Вернуться назад</a>
+</div>
+
+<div id="orderEditApp">
+    <table class="table table-hover table-bordered order-edit-list">
+        <colgroup>
+            <col class="col-item"/>
+            <col class="col-article"/>
+            <col class="col-code"/>
+            <col class="col-count"/>
+            <col class="col-price"/>
+            <col class="col-actions"/>
+        </colgroup>
+        <tr>
+            <th>Наименование</th>
+            <th>Артикул</th>
+            <th>Код</th>
+            <th>Количество</th>
+            <th>Цена за ед.</th>
+            <th></th>
+        </tr>
+        <tr v-for="(item, index) in items">
+            <td>
+                <div class="name"><a :href="item.link">{{ item.name }}</a></div>
+                <div class="params" v-if="item.properties">
+                    <div class="param" v-for="(value, property) in item.properties">
+                        <span class="name">{{ property }}:</span> <span class="value">{{ value }}</span>
+                    </div>
+                </div>
+            </td>
+            <td>{{ item.article }}</td>
+            <td>{{ item.offer.code }}</td>
+            <td><input class="form-control" type="number" v-model="item.count" min="1"></td>
+            <td><input class="form-control" type="number" v-model="item.price"></td>
+            <td><a title="Удалить товар из заказа" href="Javascript:void(0)" @click="deleteItem(index)"><i class="fas fa-times"></i></td>
+        </tr>
+    </table>
+
+    <div class="row">
+        <div class="col-md-6">
+            <div class="order-total">
+                <table class="table table-sm table-bordered">
+                    <? if ($this->order->price_discount): ?>
+                        <tr>
+                            <td>СКИДКА ЗА ЗАКАЗ:</td>
+                            <td><?= $this->order->price_discount ?> руб.</td>
+                        </tr>
+                    <? endif ?>
+                    <? if ($this->order->price_coupon): ?>
+                        <tr>
+                            <td>СКИДКА ПО КУПОНУ:</td>
+                            <td><?= $this->order->price_coupon ?> руб.</td>
+                        </tr>
+                    <? endif ?>
+                    <tr>
+                        <td>ОБЩАЯ СТОИМОСТЬ ЗАКАЗА С УЧЕТОМ СКИДОК:</td>
+                        <td><input type="number" class="form-control total-price" v-model="total_price"> руб.</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <div class="col-md-6 text-end">
+            <a class="btn btn-primary" href="Javascript:void(0)" @click="addItem">Добавить позицию</a>
+            <a class="btn btn-success" href="Javascript:void(0)" @click="saveChanges">Сохранить изменения</a>
+        </div>
+    </div>
+    <hr/>
+    <br>
+    <div class="client-info" ref="orderInfo" data-order_id="<?= $this->order->id ?>">
+        <h4>Информация о заказчике</h4>
+        <?= $this->form($this->form) ?>
+    </div>
+</div>

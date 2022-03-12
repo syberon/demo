@@ -1,0 +1,15 @@
+.social-blocks-wrapper {
+    padding-top: 65px;
+    @media (max-width: 1920px) {
+        padding-top: 40px;
+    }
+    @media (max-width: 991px) {
+        padding-top: 0;
+    }
+
+    .container {
+        .row {
+            align-items: flex-start;
+        }
+    }
+}

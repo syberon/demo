@@ -1,0 +1,8 @@
+<div id="cartWidget">
+    <div v-if="items">
+        Товаров в <a href="<?= $this->url('catalog/cart') ?>">корзине:</a> {{ items }}<br> на общую стоимость: {{ price }} руб.
+    </div>
+    <div v-if="favorites">
+        <a href="<?= $this->url('catalog/favorites') ?>">Избранное: </a> {{ favorites }}
+    </div>
+</div>

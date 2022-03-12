@@ -1,0 +1,38 @@
+<?
+/**
+ * Copyright (c) 2019.
+ *
+ * @author Syber
+ */
+
+$this->inlineScript()->appendScript("window.modules.push('cms/modules/catalog/favorites')");
+$this->headTitle('Избранное');
+?>
+
+<h2>Избранные товары</h2>
+
+<div id="favoritesApp">
+    <div class="favorites-block">
+        <div class="row items">
+            <div class="col-sm-6 col-lg-3 col-xl-2 item" v-for="item in items" @click="openItem(item.link)">
+                <a class="icon-delete" title="Удалить из избранного" href="#" @click.stop="deleteItem(item.id)"><i class="fas fa-times-circle"></i></a>
+                <div class="pic">
+                    <img v-if="item.picture" :src="item.picture" src="" class="img-fluid">
+                    <img v-else src="https://dummyimage.com/300x400/ddd/000.jpg&text=No+photo" class="img-fluid">
+                </div>
+                <div class="title">{{ item.name }}</div>
+                <div class="price">
+                    <div class="main">
+                        <div class="price">{{ item.price }} руб.</div>
+                        <div class="price_base" v-if="item.price_sale">{{ item.price_base }} руб.</div>
+                    </div>
+                    <div class="discount" v-if="item.price_sale" >Скидка: {{ item.price_discount }} руб.</div>
+                </div>
+            </div>
+        </div>
+        <div v-if="items.length" class="buttons">
+            <a class="btn btn-danger" href="Javascript:void(0)" @click="clearList">Очистить список</a>
+        </div>
+    </div>
+</div>
+

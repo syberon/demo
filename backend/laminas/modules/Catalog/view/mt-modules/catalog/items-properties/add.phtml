@@ -1,0 +1,14 @@
+<?
+$this->inlineScript()->appendScript("window.modules.push('cms/plugins/seourl')");
+$this->headTitle("Добавление нового свойства товара")
+?>
+
+<div class="admin-content-block">
+    <h3>Добавление нового свойства товара</h3>
+
+    <div class="admin-buttons">
+        <a class="btn btn-light" href="<?= $this->url('catalog/items-properties') ?>">Вернуться назад</a>
+    </div>
+
+    <?= $this->form($this->form) ?>
+</div>

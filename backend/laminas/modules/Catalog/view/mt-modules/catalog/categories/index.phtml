@@ -1,0 +1,62 @@
+<?
+$this->inlineScript()->appendScript("window.modules.push('cms/modules/catalog/categories.tree')");
+$this->headTitle("Структура категорий каталога")
+?>
+
+<div id="actions-submenu">
+    <h4>Действия</h4>
+    <div class="list-group">
+        <a class="list-group-item" href="<?= $this->url('catalog/categories/add') ?>"><i class="fas fa-plus"></i> Добавить категорию</a>
+    </div>
+</div>
+
+
+<div class="admin-content-block">
+    <h3>Структура категорий каталога</h3>
+
+    <div id="categoriesApp">
+        <div class="row">
+            <div class="col-md-6">
+                <table id="categoriesTree" class="table table-hover">
+                    <tbody>
+                    <tr>
+                        <td></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="col-md-6">
+                <br class="d-block d-lg-none"/>
+                <div class="card" v-if="item.id">
+                    <div class="card-header">Информация о категории</div>
+                    <div class="table-responsive">
+                        <table class="table table-sm table-hover table-bordered">
+                            <colgroup>
+                                <col style="width: 30%"/>
+                                <col/>
+                            </colgroup>
+                            <tr>
+                                <td class="title">Название</td>
+                                <td>{{ item.name }}</td>
+                            </tr>
+                            <tr>
+                                <td>Символьный код</td>
+                                <td>{{ item.url }}</td>
+                            </tr>
+                            <tr>
+                                <td>Внешний код</td>
+                                <td>{{ item.guid }}</td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div id="item-buttons" class="card-body text-right">
+                        <a class="btn btn-light btn-sm" href='Javascript:void(0)' @click="nodeAction('toggle')">Включить/отключить</a>
+                        <a class="btn btn-light btn-sm" href='Javascript:void(0)' @click="nodeAction('add')">Добавить</a>
+                        <a class="btn btn-success btn-sm" href='Javascript:void(0)' @click="nodeAction('edit')">Редактировать</a>
+                        <a class="btn btn-danger btn-sm" href='Javascript:void(0)' @click="nodeAction('delete')">Удалить</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

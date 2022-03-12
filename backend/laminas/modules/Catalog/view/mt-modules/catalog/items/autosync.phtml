@@ -1,0 +1,58 @@
+<?
+$this->headTitle("Автоматическая синхронизация товаров");
+?>
+
+<div class="admin-content-block">
+    <h3>Результаты автоматической синхронизации товаров</h3>
+
+    <p>Загружено <?= $this->dumpResult['count'] ?> из <?= $this->dumpResult['total'] ?> наименований</p>
+
+    <? if (isset($this->dumpResult['log']) && count($this->dumpResult['log'])): ?>
+        <p>Ошибки при синхронизации:</p>
+        <table class="table table-sm table-hover">
+            <thead>
+            <tr>
+                <th>Артикул</th>
+                <th>Название</th>
+                <th>Причина</th>
+            </tr>
+            </thead>
+            <tbody>
+            <? foreach ($this->dumpResult['log'] as $record): ?>
+                <tr>
+                    <td><?= $record['article'] ?></td>
+                    <td><?= $record['name'] ?></td>
+                    <td><?= $record['reason'] ?></td>
+                </tr>
+            <? endforeach ?>
+            </tbody>
+        </table>
+    <? endif ?>
+
+    <br>
+    <hr>
+    <h3>Результаты автоматической загрузки фотографий</h3>
+
+    <p>Загружено <?= $this->fileResult['count'] ?> из <?= $this->fileResult['total'] ?> файлов</p>
+
+    <? if (count($this->fileResult['log'])): ?>
+        <p>Ошибки при синхронизации:</p>
+        <table class="table table-sm table-hover">
+            <thead>
+            <tr>
+                <th>Файл</th>
+                <th>Причина</th>
+            </tr>
+            </thead>
+            <tbody>
+            <? foreach ($this->fileResult['log'] as $record): ?>
+                <tr>
+                    <td><?= $record['file'] ?></td>
+                    <td><?= $record['reason'] ?></td>
+                </tr>
+            <? endforeach ?>
+            </tbody>
+        </table>
+    <? endif ?>
+
+</div>

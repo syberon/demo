@@ -1,0 +1,11 @@
+<div class="card login-panel d-block mx-auto">
+    <div class="card-body">
+        <? $this->form->setAttribute('action', $this->url('user/login')) ?>
+        <?= $this->form($this->form) ?>
+    </div>
+    <div class="card-footer text-right">
+        <div class="list-inline">
+            <a href="<?= $this->url('user/lostpassword') ?>"><?= $this->translate("Забыли пароль?"); ?></a>
+        </div>
+    </div>
+</div>

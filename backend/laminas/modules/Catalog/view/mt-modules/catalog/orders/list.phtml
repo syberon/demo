@@ -1,0 +1,114 @@
+<?
+/**
+ * Copyright (c) 2019.
+ *
+ * @author Syber
+ */
+
+$this->headTitle('Управление заказами');
+$this->inlineScript()->appendScript("window.modules.push('cms/modules/catalog/orders.list')");
+?>
+
+<h2>Управление заказами</h2>
+<br>
+
+<div id="ordersListApp" class="admin-orders">
+    <table class="table table-sm table-bordered table-hover admin-orders-list">
+        <colgroup>
+            <col class="col-id"/>
+            <col class="col-date"/>
+            <col class="col-name"/>
+            <col class="col-email"/>
+            <col class="col-count"/>
+            <col class="col-price"/>
+            <col class="col-price-delivery"/>
+            <col class="col-status"/>
+            <col class="col-actions"/>
+        </colgroup>
+        <thead>
+            <tr class="table-head">
+                <th>
+                    <a href="Javascript:void(0)" @click="setOrder('id')">#</a><br>
+                    <input type="number" class="form-control" v-model="filter.fields.id">
+                </th>
+                <th>
+                    <a href="Javascript:void(0)" @click="setOrder('date')">Дата</a><br>
+                    <input type="date" class="form-control" style="width: 170px;" v-model="filter.fields.date">
+                </th>
+                <th>
+                    <a href="Javascript:void(0)" @click="setOrder('display_name')">Заказчик</a><br>
+                    <input type="text" class="form-control" v-model="filter.fields.display_name">
+                </th>
+                <th>
+                    <a href="Javascript:void(0)" @click="setOrder('email')">E-mail</a><br>
+                    <input type="text" class="form-control" v-model="filter.fields.email">
+                </th>
+                <th>
+                    <a href="Javascript:void(0)" @click="setOrder('count')">Кол-во</a><br>
+                    <input type="number" class="form-control" v-model="filter.fields.count">
+                </th>
+                <th>
+                    <a href="Javascript:void(0)" @click="setOrder('price')">Стоимость</a><br>
+                    <input type="number" class="form-control" v-model="filter.fields.price">
+                </th>
+                <th>
+                    <a href="Javascript:void(0)" @click="setOrder('price_delivery')">Доставка</a><br>
+                    <input type="number" class="form-control" v-model="filter.fields.price_delivery">
+                </th>
+                <th>
+                    <a href="Javascript:void(0)" @click="setOrder('status')">Статус</a><br>
+                    <select class="form-control" v-model="filter.fields.status">
+                        <option value=""></option>
+                        <option value="1">Оформлен, ожидет оплаты</option>
+                        <option value="2">Подтвержден</option>
+                        <option value="3">Передан в службу доставки</option>
+                        <option value="4">Выполнен</option>
+                        <option value="5">Отменен</option>
+                    </select>
+                </th>
+                <th><a class="clear-filter" title="Очистить фильтр" @click="clearFilter"><i class="fas fa-times-circle"></i></a></th>
+            </tr>
+        </thead>
+        <tr v-for="order in items">
+            <td>{{ order.id }}</td>
+            <td>{{ order.format_date }}</td>
+            <td>{{ order.display_name }}</td>
+            <td>{{ order.email }}</td>
+            <td>{{ order.count }}</td>
+            <td>{{ order.price }}</td>
+            <td>{{ order.price_delivery }}</td>
+            <td><div :class="`status status_${order.status}`">{{ order.status_text }}</div></td>
+            <td>
+                <a :href="'<?= $this->url('catalog/orders/edit') ?>' + order.id" title="Изменить"><i class="fas fa-pen icon-green"></i></a>
+                <a href="Javascript:void(0)" @click.prevent="deleteOrder(order.id)" title="Удалить"><i class="fas fa-times icon-red"></i></a>
+            </td>
+        </tr>
+    </table>
+
+    <div class="pages-block">
+        <div class="paginator">
+            <nav aria-label="Постраничная навигация" v-if="pagination.pages.length > 1">
+                <ul class="pagination">
+                    <li class="page-item" :class="{ disabled: !pagination.arrows.left }">
+                        <a class="page-link" @click="pageDec" href="Javascript:void(0)"><i class="fas fa-arrow-left"></i></a>
+                    </li>
+                    <li class="page-item" :class="{ 'active' : page == filter.page}" v-for="page in pagination.pages">
+                        <a class="page-link" @click="pageSet(page)"  href="Javascript:void(0)">{{ page }} </a>
+                    </li>
+                    <li class="page-item" :class="{ disabled: !pagination.arrows.right }">
+                        <a class="page-link" @click="pageInc" href="Javascript:void(0)"><i class="fas fa-arrow-right"></i></a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+        <div class="page-size">
+            <label>Записей на странице:</label>
+            <select class="form-control" v-model="params.pageSize">
+                <option value="50">50</option>
+                <option value="100">100</option>
+                <option value="100000">Все</option>
+            </select>
+        </div>
+    </div>
+
+</div>

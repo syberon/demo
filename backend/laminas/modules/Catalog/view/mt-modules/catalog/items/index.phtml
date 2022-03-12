@@ -1,0 +1,158 @@
+<?
+/**
+ * Copyright (c) 2019.
+ *
+ * @author Syber
+ */
+
+$this->inlineScript()->appendScript("window.modules.push('cms/modules/catalog/items.list.admin')");
+$this->headTitle("Управление базой товаров")
+?>
+
+<script>
+    let fields = {
+        items: <?= $this->itemsPropertiesJson ?>,
+        offers: <?= $this->offersPropertiesJson ?: 'null' ?>
+    }
+</script>
+
+<div class="admin-content-block items-list" id="itemsListApp">
+    <div class="title">
+        <h3>Управление базой товаров</h3>
+        <a class="btn btn-light" href="#" @click="toggleFilter">Фильтрация</a>
+    </div>
+    <div class="filters-block" v-if="show_filter">
+        <div class="property">
+            <label>Название</label>
+            <input type="text" name="name" class="form-control" v-model="filter.fields.name">
+        </div>
+        <div class="property">
+            <label>Артикул</label>
+            <input type="text" name="article" class="form-control" v-model="filter.fields.article">
+        </div>
+        <? foreach ($this->itemsProperties as $property): ?>
+            <div class="property">
+                <label><?= $property->name ?></label>
+                <select class="form-control" name="item-property[<?= $property->code ?>]" v-model="filter.properties.items.<?= $property->code ?>">
+                    <? foreach ($property->values as $key => $value): ?>
+                        <? if ($property->type == 'checkbox'): ?>
+                            <option value="<?= $key ?>"><?= $value ?></option>
+                        <? else: ?>
+                            <option value="<?= $value ?>"><?= $value ?></option>
+                        <? endif ?>
+                    <? endforeach ?>
+                </select>
+            </div>
+        <? endforeach ?>
+
+        <? if ($this->offersProperties): ?>
+            <? foreach ($this->offersProperties as $property): ?>
+                <div class="property">
+                    <label><?= $property->name ?></label>
+                    <select class="form-control" name="offer-property[<?= $property->code ?>]" v-model="filter.properties.offers.<?= $property->code ?>">
+                        <? foreach ($property->values as $value): ?>
+                            <option value="<?= $value ?>"><?= $value ?></option>
+                        <? endforeach ?>
+                    </select>
+                </div>
+            <? endforeach ?>
+        <? endif ?>
+        <div class="filter-save">
+            <a class="btn btn-light" @click="applyFilter">Применить</a>
+            <a class="btn btn-light" @click="clearFilter">Сбросить</a>
+        </div>
+    </div>
+    <br>
+    <div id="actions-submenu">
+        <h4>Действия</h4>
+        <div class="list-group">
+            <a class="list-group-item" href="<?= $this->url('catalog/items/add') ?>"><i class="fas fa-plus"></i> Добавить товар</a>
+        </div>
+    </div>
+
+    <div class="row items-list-block">
+        <div class="col-md-3 categories-tree">
+            <table id="categoriesTree" class="table table-hover">
+                <tbody>
+                <tr>
+                    <td></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="col-md-9 items-list">
+            <table class="table table-hover table-bordered">
+                <colgroup>
+                    <col class="col-checkbox"/>
+                    <col class="col-id"/>
+                    <col class="col-name"/>
+                    <? if ($this->config()['catalog']['options']['items-use-article']): ?>
+                        <col class="col-article"/>
+                    <? endif ?>
+                    <col class="col-active"/>
+                    <col class="col-action"/>
+                </colgroup>
+                <thead>
+                    <tr>
+                        <th>
+                            <input type="checkbox" v-model="check_all">
+                        </th>
+                        <th><a href="Javascript:void(0)" @click="setOrder('id')">ID</a></th>
+                        <th><a href="Javascript:void(0)" @click="setOrder('name')">Название</a></th>
+                        <? if ($this->config()['catalog']['options']['items-use-article']): ?>
+                            <th><a href="Javascript:void(0)" @click="setOrder('article')">Артикул</a></th>
+                        <? endif ?>
+                            <th><a href="Javascript:void(0)" @click="setOrder('active')">Активность</a></th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr v-for="item in itemsList">
+                        <td>
+                            <input type="checkbox" v-model="checkItems[item.id]">
+                        </td>
+                        <td>{{ item.id }}</td>
+                        <td>{{ item.name }}</td>
+                        <? if ($this->config()['catalog']['options']['items-use-article']): ?>
+                            <td>{{ item.article }}</td>
+                        <? endif ?>
+                        <td>{{ item.active == 1 ? 'Да' : 'Нет' }}</td>
+                        <td>
+                            <a :href="'<?= $this->url('catalog/items/edit') ?>' + item.id" title="Изменить"><i class="fas fa-pen icon-green"></i></a>
+                            <a @click.prevent="deleteItem(item.id)" href="JavaScript:void(0)" title="Удалить"><i class="fas fa-times icon-red"></i></a>
+                        </td>
+
+                    </tr>
+                </tbody>
+            </table>
+            <div class="pages-block">
+                <div class="paginator">
+                    <nav aria-label="Постраничная навигация" v-if="pagination.pages.length > 1">
+                        <ul class="pagination">
+                            <li class="page-item" :class="{ disabled: !pagination.arrows.left }">
+                                <a class="page-link" @click="pageDec" href="Javascript:void(0)"><i class="fas fa-arrow-left"></i></a>
+                            </li>
+                            <li class="page-item" :class="{ 'active' : page == filter.page}" v-for="page in pagination.pages">
+                                <a class="page-link" @click="pageSet(page)"  href="Javascript:void(0)">{{ page }} </a>
+                            </li>
+                            <li class="page-item" :class="{ disabled: !pagination.arrows.right }">
+                                <a class="page-link" @click="pageInc" href="Javascript:void(0)"><i class="fas fa-arrow-right"></i></a>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+                <div class="page-size">
+                    <label>Записей на странице:</label>
+                    <select class="form-control" v-model="params.pageSize">
+                        <option value="50">50</option>
+                        <option value="100">100</option>
+                        <option value="100000">Все</option>
+                    </select>
+                    &nbsp;
+                    <a class="btn btn-danger btn-delete-selected" @click="deleteSelected">Удалить выбранные</a>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>

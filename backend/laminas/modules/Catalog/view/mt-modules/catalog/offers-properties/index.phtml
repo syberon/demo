@@ -1,0 +1,67 @@
+<?
+/**
+ * Copyright (c) 2019.
+ *
+ * @author Syber
+ */
+
+$this->inlineScript()->appendScript("window.modules.push('cms/modules/catalog/offers-properties.sortable')");
+$this->headTitle("Свойства торговых предложений")
+?>
+
+<div class="admin-content-block">
+    <h3>Управление свойствами торговых предложений</h3>
+    <br>
+    <div id="actions-submenu">
+        <h4>Действия</h4>
+        <div class="list-group">
+            <a class="list-group-item" href="<?= $this->url('catalog/offers-properties/add') ?>"><i class="fas fa-plus"></i> Добавить свойство</a>
+        </div>
+    </div>
+
+    <table class="table table-hover table-striped properties-list">
+        <colgroup>
+            <col class="col-handle"/>
+            <col class="col-name"/>
+            <col class="col-code"/>
+            <col class="col-type"/>
+            <col class="col-filter"/>
+            <col class="col-guid"/>
+            <col class="col-action"/>
+        </colgroup>
+        <thead>
+        <tr>
+            <th></th>
+            <th>Название</th>
+            <th>Символный код</th>
+            <th>Тип</th>
+            <th>Фильтр</th>
+            <th>Внешний код</th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody class="items-sortable">
+        <? foreach ($this->records as $property): ?>
+            <tr class="item" data-id="<?= $property->id ?>">
+                <td class="handle"><i title="Поменять порядок" class="fas fa-exchange-alt fa-rotate-90"></i></td>
+                <td><?= $property->name ?></td>
+                <td><?= $property->code ?></td>
+                <td>
+                    <? if ($property->type == 'select'): ?>
+                        <?= $this->types[$property->type] ?>
+                        <a href="<?= $this->url('catalog/offers-properties-defaults/list', ['property' => $property->id]) ?>">[ значения ]</a>
+                    <? else: ?>
+                        <?= $this->types[$property->type] ?>
+                    <? endif ?>
+                </td>
+                <td><?= $property->filter ? 'Да' : 'Нет' ?></td>
+                <td><?= $property->guid ?></td>
+                <td>
+                    <a href="<?= $this->url('catalog/offers-properties/edit', ['id' => $property->id]) ?>" title="Изменить"><i class="fas fa-pen icon-green"></i></a>
+                    <a href="<?= $this->url('catalog/offers-properties/delete', ['id' => $property->id]) ?>" title="Удалить" class="confirm"><i class="fas fa-times icon-red"></i></a>
+                </td>
+            </tr>
+        <? endforeach ?>
+        </tbody>
+    </table>
+</div>

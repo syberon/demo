@@ -1,0 +1,9 @@
+.promo {
+    position: relative;
+
+    > .container {
+        @media (max-width: 575px) {
+            padding: 0;
+        }
+    }
+}

@@ -1,0 +1,224 @@
+<?
+$this->inlineScript()->appendScript("window.modules.push('cms/modules/catalog/items.view')");
+$this->headTitle($this->item->name);
+?>
+
+<script>
+    let initData = {
+        pictures: <?= $this->pictures ?>,
+        offers: <?= $this->offers ?>,
+        related: <?= $this->related ?>,
+        item_id: <?= $this->item->id ?>
+    }
+</script>
+
+<div class="admin-buttons">
+    <a class="btn btn-light" href="Javascript:history.back()">Вернуться назад</a>
+</div>
+
+<div id="itemViewApp">
+    <div class="item-view row">
+        <div class="col-md-4 pictures">
+            <div class="main">
+                <a :href="mainPicture.link" class="item-gallery" data-fancybox="item-gallery">
+                    <img :src="mainPicture.src" class="img-fluid">
+                </a>
+                <div class="hidden-gallery">
+                    <a data-fancybox="item-gallery" class="item-gallery" :href="picture.big" v-for="picture in gallery_pictures"></a>
+                </div>
+            </div>
+            <div class="additional">
+                <div class="item" v-for="picture in pictures" @click="setMainPicture(picture)" v-if="pictures.length > 1">
+                    <img :src="picture.thumb" class="img-fluid">
+                </div>
+            </div>
+        </div>
+        <div class="col-md-8 content">
+            <div class="title"><?= $this->item->name ?></div>
+            <div class="properties-line">
+                <div class="properties">
+                    <div class="property" v-for="(property, code) in properties">
+                        <div class="name">{{ property.name }}</div>
+                        <div class="values">
+                            <div class="item" v-for="value in ordered.values[code]" :class="{ active: property.values[value].active , disabled: property.values[value].disabled }" @click="setActive(value, code)">
+                                {{ value }}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="reset-button" v-if="offers.length > 1 && false">
+                        <a class="btn-sm btn-light" @click="initOffers()" href="Javascript:void(0)">Сброс параметров</a>
+                    </div>
+                </div>
+                <div class="price-block">
+                    <div class="main-line">
+                        <div class="current-price">{{ selectedOffer.price_sale ? selectedOffer.price_sale : selectedOffer.price }} руб.</div>
+                        <div class="base-price" v-if="selectedOffer.price_sale">{{ selectedOffer.price }} руб.</div>
+                    </div>
+                    <div class="discount" v-if="selectedOffer.price_sale">Скидка: {{ (selectedOffer.price - selectedOffer.price_sale) }} руб.</div>
+                    <div class="stock">Остаток на складе: {{ selectedOffer.count }}</div>
+
+                    <div class="cart-block">
+                        <a class="btn btn-add-to-cart" @click="addToCart" v-if="selectedOffer">Добавить в корзину</a>
+                        <a class="btn btn-add-to-favorites" @click="addToFavorites">Добавить в избранное</a>
+                    </div>
+                </div>
+            </div>
+            <div class="properties">
+                <div class="property">
+                    Артикул: <?= $this->item->article ?>
+                </div>
+                <? if (isset($this->item->info_properties) && count($this->item->info_properties)): ?>
+                    <? foreach ($this->item->info_properties as $name => $value): ?>
+                        <div class="property">
+                            <span class="name"><?= $name ?></span>:
+                            <? if (is_array($value)): ?>
+                                <? foreach ($value as $key => $variant): ?>
+                                    <span class="value"><?= $variant ?></span><? if ($key < count($value) - 1) echo ', ' ?>
+                                <? endforeach ?>
+                            <? else: ?>
+                                <?= $value ?>
+                            <? endif ?>
+                        </div>
+                    <? endforeach ?>
+                <? endif ?>
+            </div>
+            <div class="description">
+                <?= $this->item->description ?>
+            </div>
+            <? if (isset($this->item->brand)): ?>
+                <div class="brand">
+                    <div class="title">
+                        <div class="name"><?= $this->item->brand->title ?></div>
+                        <div class="logo">
+                            <? if ($this->item->brand->picture && $this->uploads()->has($this->item->brand->picture)): ?>
+                                <a href="<?= $this->url('feedrouter', ['item' => $this->item->brand->id]) ?>">
+                                    <img class="img-fluid" src="<?= $this->htImgUrl($this->uploads($this->item->brand->picture)->getPublicUrl(), 'catalog_brand') ?>" />
+                                </a>
+                            <? endif ?>
+                        </div>
+                    </div>
+                    <div class="description">
+                        <?= $this->item->brand->preview ?>
+                        <a class="brand-link" href="<?= $this->url('feedrouter', ['item' => $this->item->brand->id]) ?>">Подробнее</a>
+                    </div>
+                </div>
+            <? endif ?>
+
+            <? if ($this->config()['catalog']['options']['use-feedback']): ?>
+                <div class="feedback" ref="feedbackBlock" data-item="<?= $this->item->id ?>">
+                    <div class="buttons">
+                        <transition name="bounceLeft">
+                            <button class="btn btn-show-feedback" v-if="feedback.display.block && feedback.display.btn_add_feedback" @click="showFeedbackForm()" :disabled="!feedback.active.btn_add_feedback">Добавить отзыв</button>
+                        </transition>
+                        <a class="btn btn-show-feedback" href="Javascript:void(0)" @click="showFeedbackBlock()">Показать отзывы о товаре <span v-if="feedback.items.length">({{ feedback.items.length }})</span></a>
+                    </div>
+                    <div class="total-rate" v-if="feedback.total_rate">
+                        Общая оценка: <div class="num"><span class="rate">{{ feedback.total_rate }}</span> / 5</div>
+                    </div>
+                    <div class="total-feedback-count">Всего отзывов: {{ feedback.items.length }}</div>
+                    <div class="content">
+                        <div class="form-wrapper">
+                            <transition name="slideDown">
+                                <div class="form" v-if="feedback.display.form">
+                                    <? if ($this->user()->hasIdentity()): ?>
+                                    <form @submit.prevent="submitFeedback()" id="feedbackForm">
+                                        <div class="mb-3 rate">
+                                            <div class="rate-title">Оценка товара:</div>
+                                            <div class="star" v-for="(rate, index) in feedback.rate" @mouseenter="hoverItem(index)" @mouseleave="resetRate()" @click="setRate(index)">
+                                                <img src="/img/rate-gray.png" v-if="!rate">
+                                                <img src="/img/rate-gold.png" v-else>
+                                            </div>
+                                        </div>
+                                        <? if ($this->acl()->hasRole('admin')): ?>
+                                            <div class="mb-3">
+                                                <input class="form-control" type="text" name="username" placeholder="Имя пользователя" required>
+                                            </div>
+                                        <? endif ?>
+                                        <div class="mb-3">
+                                            <textarea class="form-control" name="text" placeholder="Текст отзыва" required>
+                                            </textarea>
+                                        </div>
+                                        <div class="mb-3 submit-row">
+                                            <button type="submit" class="btn btn-light">Отправить</button>
+                                        </div>
+                                        <input type="hidden" name="rate" v-model="feedback.currentRate">
+                                        <input type="hidden" name="item" value="<?= $this->item->id ?>">
+                                    </form>
+                                    <? else: ?>
+                                        <div class="auth-message">
+                                            Вы должны быть авторизованы на сайте, чтобы оставить свой отзыв.
+                                        </div>
+                                    <? endif ?>
+                                </div>
+                            </transition>
+                            <transition name="slideUp">
+                                <div class="error-message" v-if="feedback.display.error_message">
+                                    При отправке вашего отзыва возникла ошибка. Попробуйте повторить попозже.
+                                </div>
+                            </transition>
+                            <transition name="bounceRight">
+                                <div class="success-message" v-if="feedback.display.success_message">
+                                    Ваш отзыв успешно отправлен. Он появится сразу после того, как его проверит наш модератор.
+                                </div>
+                            </transition>
+                        </div>
+
+                        <transition name="slideDown">
+                            <div class="items" v-if="feedback.display.block">
+                                <div class="item" v-for="item in feedbackItemsList">
+                                    <div class="line">
+                                        <div class="username">
+                                            {{ item.username }}
+                                        </div>
+                                        <div class="userrate">
+                                            <div class="star" v-for="(position, index) in [1, 2, 3, 4, 5]">
+                                                <img src="/img/rate-gold.png" v-if="position <= item.rate">
+                                                <img src="/img/rate-gray.png" v-else="">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="date">
+                                        {{ item.date }}
+                                    </div>
+                                    <div class="text">
+                                        <div v-html="item.text"></div>
+                                    </div>
+                                </div>
+                                <div class="btn-more">
+                                    <button class="btn btn-light btn-show-more" @click="showAllFeedbacks()" v-if="feedbackItemsList.length < feedback.items.length">Показать остальные отзывы ({{ feedback.items.length - feedbackItemsList.length }})</button>
+                                </div>
+                            </div>
+                        </transition>
+                    </div>
+                </div>
+            <? endif ?>
+        </div>
+    </div>
+
+    <? if ($this->config()['catalog']['options']['use-related']): ?>
+        <div class="item-related-block" v-if="itemsRelated.length">
+            <h3>С этим товаром так же покупают</h3>
+            <div class="row items">
+                <div class="col-sm-6 col-lg-3 col-xl-2 item" v-for="item in itemsRelated" @click="openItem(item.link)">
+                    <a :href="item.link">
+                        <div class="content">
+                            <div class="pic">
+                                <img v-if="item.picture" :src="item.picture" src="" class="img-fluid">
+                                <img v-else src="https://dummyimage.com/300x400/ddd/000.jpg&text=No+photo" class="img-fluid">
+                            </div>
+                            <div class="title">{{ item.name }}</div>
+                            <div class="price">
+                                <div class="main">
+                                    <div class="price">{{ item.price }} руб.</div>
+                                    <div class="price_base" v-if="item.price_sale">{{ item.price_base }} руб.</div>
+                                </div>
+                                <div class="discount" v-if="item.price_sale" >Скидка: {{ item.price_discount }} руб.</div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+    <? endif ?>
+</div>
+

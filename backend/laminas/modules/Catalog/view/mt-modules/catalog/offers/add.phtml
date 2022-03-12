@@ -1,0 +1,19 @@
+<?
+/**
+ * Copyright (c) 2019.
+ *
+ * @author Syber
+ */
+
+$this->headTitle("Добавление нового торгового предложения");
+?>
+
+<div class="admin-content-block">
+    <h3>Добавление нового торгового предложения</h3>
+
+    <div class="admin-buttons">
+        <a class="btn btn-light" href="<?= $this->url('catalog/items/edit', ['id' => $this->item->id], ['fragment' => 'offers']) ?>">Вернуться назад</a>
+    </div>
+
+    <?= $this->form($this->form) ?>
+</div>

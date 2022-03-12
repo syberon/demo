@@ -1,0 +1,79 @@
+/*!
+ * Copyright (c) 2019.
+ *
+ * @author Syber
+ */
+
+$bg-color: #a1c527;
+$link-color: #fff;
+$hover-color: #cc0000;
+
+.navbar-custom {
+    border: 0px;
+    margin-bottom: 0px;
+    border-radius: 0;
+    min-height: 45px;
+    
+    .navbar-brand {
+        color: $link-color;
+    
+        &:hover, &:focus {
+          color: $hover-color;
+          background-color: transparent;
+        }
+    }
+    
+    .navbar-nav {
+        & > li {
+            a {
+                font-family: Arial, Tahoma, serif;
+                font-weight: bold;
+                text-transform: uppercase;
+                color: $link-color;
+                text-shadow: none;
+                padding-top: 15px;
+                padding-bottom: 15px;
+                padding-left: 10px;
+                font-size: 16px;
+        
+                &:hover, &:focus {
+                    color: $hover-color;
+                    background-color: transparent;
+                }
+            }
+            
+            &.active {
+                & > a, & > a:hover, & > a:focus {
+                    color: $hover-color;
+                }
+            }
+        }
+        
+        & > li.dropdown {
+            ul {
+                a {
+                    font-weight: normal;
+                    font-size: 14px;
+                }
+            }
+        }
+        
+        @media (max-width: 768px) {
+            margin-left: 0px;
+            margin-right: 0px;
+        }
+        
+    }
+    
+    .navbar-toggle {
+        background-color: #000000;
+        
+        &:hover, &:focus {
+            background-color: #000000;
+        }
+        
+        .icon-bar {
+            background-color: #ffffff;
+        }
+    }
+}

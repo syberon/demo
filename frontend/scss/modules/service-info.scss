@@ -1,0 +1,103 @@
+.service-info {
+    p {
+        font-size: 0.9rem;
+
+        &:last-child {
+            margin-bottom: 0;
+        }
+    }
+}
+
+.service-info--inner {
+    > .content {
+        padding: 40px 35px 60px 35px;
+        background-color: $main-basic-dark;
+        @media (max-width: 1920px) {
+            padding: 30px 25px 50px 25px;
+        }
+        @media (max-width: 1599px) {
+            padding: 25px 20px 40px 20px;
+        }
+        @media (max-width: 1399px) {
+            padding: 25px 20px 30px 20px;
+        }
+    }
+
+    .service-title {
+        font-weight: 700;
+        font-size: 1.35rem;
+        line-height: 1.4;
+        margin-bottom: 25px;
+        @media (max-width: 1920px) {
+            margin-bottom: 30px;
+        }
+        @media (max-width: 1699px) {
+            margin-bottom: 20px;
+        }
+        @media (max-width: 1199px) {
+            color: #f5f4f6;
+        }
+    }
+
+    .basic-direction-note {
+        background-color: #f5f4f6;
+        color: $main-basic-dark;
+        padding-top: 6px;
+        padding-bottom: 5px;
+        border: unset;
+        margin-bottom: 34px;
+        @media (max-width: 1920px) {
+            font-size: 0.8rem;
+            margin-bottom: 25px;
+        }
+        @media (max-width: 1599px) {
+            font-size: 0.75rem;
+        }
+        @media (max-width: 575px) {
+            margin-bottom: 15px;
+        }
+    }
+
+    .basic-title {
+        color: #f5f4f6;
+        font-size: 1.35rem;
+        font-weight: 700;
+        margin-bottom: 30px;
+        @media (max-width: 1920px) {
+            margin-bottom: 20px;
+        }
+    }
+
+    .content {
+        color: #f5f4f6;
+        font-size: 1rem;
+        font-weight: 700;
+        margin-bottom: 57px;
+        @media (max-width: 1920px) {
+            margin-bottom: 45px;
+        }
+        @media (max-width: 1399px) {
+            margin-bottom: 30px;
+        }
+
+        p {
+            &:last-child {
+                margin-bottom: 0;
+            }
+        }
+    }
+
+    .buttons-wrapper .basic-button {
+        background-color: transparent;
+        border: 1px solid #F5F4F6;
+        @media (max-width: 1920px) {
+            font-size: 0.8rem;
+        }
+
+        &:hover {
+            background-color: #f5f4f6;
+            color: $main-basic-dark;
+            transition: 0.2s ease;
+        }
+    }
+}

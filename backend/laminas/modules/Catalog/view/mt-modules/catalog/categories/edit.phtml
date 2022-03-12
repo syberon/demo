@@ -1,0 +1,14 @@
+<?
+$this->inlineScript()->appendScript("window.modules.push('cms/plugins/seourl')");
+$this->headTitle("Редактирование категории");
+?>
+
+<div class="admin-content-block">
+    <h3>Редактирование категории</h3>
+
+    <div class="admin-buttons">
+        <a class="btn btn-light" href="<?= $this->url('catalog/categories') ?>">Вернуться назад</a>
+    </div>
+
+    <?= $this->form($this->form) ?>
+</div>

@@ -1,0 +1,66 @@
+.about-page {
+    .service-item-info .service-item-main-info {
+        @media (max-width: 767px) {
+            flex-direction: column-reverse;
+        }
+        @media (max-width: 575px) {
+            margin-bottom: 0;
+        }
+    }
+
+    .service-item-info .service-item-main-info .description {
+        @media (max-width: 767px) {
+            margin-top: 20px;
+        }
+    }
+
+    .service-item-info .service-item-main-info .description .content .text {
+        padding-right: 0;
+    }
+
+    .service-item-info .service-presentation {
+        @media (max-width: 991px) {
+            align-items: flex-start;
+        }
+    }
+
+    .service-item-info .service-presentation .service-presentation-features {
+        flex-wrap: wrap;
+        justify-content: flex-start;
+
+        .service-presentation-features-item-title {
+            width: 100%;
+            font-size: 1rem;
+            font-weight: 700;
+            line-height: 1.4;
+            border-bottom: 3px solid $main-basic-dark;
+            padding-bottom: 5px;
+            @media (max-width: 991px) {
+                margin-bottom: 20px;
+            }
+        }
+
+        .service-presentation-features-item {
+            width: 43%;
+            max-width: 43%;
+            @media (max-width: 1199px) {
+                width: 48%;
+                max-width: 48%;
+            }
+            @media (max-width: 399px) {
+                width: 100%;
+                max-width: 100%;
+            }
+
+            > ul {
+                @media (max-width: 399px) {
+                    margin-bottom: 0;
+                }
+            }
+        }
+
+        .service-presentation-features-item .service-presentation-features-list {
+            padding-top: 0;
+        }
+    }
+}

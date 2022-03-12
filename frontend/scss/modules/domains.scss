@@ -1,0 +1,282 @@
+.domains {
+    .basic-direction-content-wrapper {
+        .basic-direction-description {
+            .content {
+                @media (max-width: 575px) {
+                    max-width: 100%;
+                    padding-right: 25%;
+                }
+            }
+        }
+    }
+
+    .basic-direction-content {
+        margin-bottom: 0;
+    }
+
+    .domains-pills {
+        @media (max-width: 767px) {
+            flex-wrap: nowrap;
+            overflow: auto;
+        }
+
+        .nav-item {
+            margin-right: 22px;
+            margin-bottom: 13px;
+            @media (max-width: 1399px) {
+                margin-right: 15px;
+            }
+            @media (max-width: 991px) {
+                margin-right: 10px;
+                margin-bottom: 10px;
+            }
+
+            .nav-link {
+                background-color: transparent;
+                color: $main-basic;
+                border: 0.5px solid $main-basic;
+                border-radius: 10px;
+                font-weight: 300;
+                padding-top: 5px;
+                padding-bottom: 4px;
+                @media (max-width: 991px) {
+                    padding-right: 10px;
+                    padding-left: 10px;
+                }
+                @media (max-width: 767px) {
+                    white-space: nowrap;
+                    font-size: 0.9rem;
+                }
+                @media (max-width: 575px) {
+                    font-size: 0.8rem;
+                }
+
+                &.active {
+                    background-color: $main-basic-dark;
+                    color: #efeef2;
+                }
+            }
+        }
+    }
+
+    .domains-tab-content {
+        .domains-tab-list {
+            // column-count: 3;
+            // column-gap: 60px;
+            display: flex;
+            flex-wrap: wrap;
+            padding-left: 20px;
+            padding-top: 50px;
+            @media (max-width: 1499px) {
+                padding-top: 30px;
+            }
+            @media (max-width: 1199px) {
+                padding-top: 10px;
+                padding-left: 10px;
+            }
+
+            &.expanding-block-domains {
+                overflow: hidden;
+                position: relative;
+
+                &::before {
+                    position: absolute;
+                    z-index: 100;
+                    width: 100%;
+                    height: 100px;
+                    background-image: linear-gradient(180deg, rgba(245, 244, 246, 0), #f5f4f6);
+                    content: "";
+                    bottom: 0;
+                    left: 0;
+                }
+
+                &.no-fading {
+                    &::before {
+                        display: none;
+                    }
+                }
+            }
+
+            .domains-item {
+                position: relative;
+                // width: fit-content;
+                // page-break-inside: avoid;
+                // break-inside: avoid;
+                margin-bottom: 10px;
+                font-size: 1.35rem;
+                padding: 0 5px;
+                width: 33%;
+                @media (max-width: 1199px) {
+                    font-size: 1.1rem;
+                }
+                @media (max-width: 767px) {
+                    width: 50%;
+                }
+                @media (max-width: 575px) {
+                    font-size: 0.9rem;
+                    margin-bottom: 5px;
+                }
+
+                span {
+                    display: inline-block;
+                    width: fit-content;
+                    position: relative;
+                    cursor: pointer;
+                }
+
+                &.basic-direction-item {
+                    height: 35px;
+                    @media (max-width: 1499px) {
+                        height: 25px;
+                    }
+                    @media (max-width: 1199px) {
+                        height: 20px;
+                    }
+
+                    &.nextstop ~ .basic-direction-item {
+                        // display: none;
+                        opacity: 0;
+                        height: 0;
+                        margin-bottom: 0;
+                        transition: 0.5s ease;
+                    }
+                }
+            }
+
+            .domains-item--sold {
+                span {
+                    cursor: not-allowed;
+
+                    &::after {
+                        position: absolute;
+                        content: "";
+                        width: 0;
+                        height: 2px;
+                        background-color: $main-font-color;
+                        left: 0;
+                        top: 50%;
+                    }
+                }
+            }
+
+            .domains-item--hot {
+                span {
+                    &::after {
+                        position: absolute;
+                        z-index: 10;
+                        content: "";
+                        width: 20px;
+                        height: 20px;
+                        left: -20px;
+                        top: 8px;
+                        opacity: 0;
+                        transform: translateY(10px);
+                        // transition: 0.2s ease;
+                        background-image: url("/img/hot.png");
+                        background-size: contain;
+                        background-repeat: no-repeat;
+                        background-position: center;
+                        @media (max-width: $hd) {
+                            width: 18px;
+                            height: 18px;
+                            left: -20px;
+                            top: 5px;
+                        }
+                        @media (max-width: 1499px) {
+                            width: 15px;
+                            height: 15px;
+                            left: -17px;
+                        }
+                        @media (max-width: 991px) {
+                            width: 13px;
+                            height: 13px;
+                        }
+                        @media (max-width: 575px) {
+                            width: 11px;
+                            height: 11px;
+                            left: -14px;
+                            top: 3px;
+                        }
+                    }
+                }
+            }
+        }
+
+        .tab-pane.show {
+            .domains-tab-list {
+                .domains-item--sold {
+                    span::after {
+                        animation-name: countingBar;
+                        animation-duration: 0.5s;
+                        animation-timing-function: linear;
+                        animation-iteration-count: 1;
+                        animation-direction: alternate;
+                        animation-fill-mode: forwards;
+                    }
+                }
+
+                .domains-item--hot {
+                    span::after {
+                        opacity: 1;
+                        transform: translateY(0);
+                        transition: 0.3s 0.2s ease;
+                    }
+                }
+            }
+        }
+
+        .more-link-wrapper {
+            padding-top: 50px;
+            @media (max-width: 1499px) {
+                padding-top: 30px;
+            }
+            @media (max-width: 1199px) {
+                padding-top: 20px;
+            }
+        }
+    }
+}
+
+.domains--inner {
+    .domains-tab-content {
+        .buttons-wrapper {
+            text-align: center;
+            justify-content: center;
+            margin-top: 50px;
+            @media (max-width: 1920px) {
+                margin-top: 20px;
+            }
+            @media (max-width: 991px) {
+                margin-bottom: 30px;
+            }
+        }
+
+        .domains-tab-list .domains-item {
+            @media (max-width: 991px) {
+                width: 50%;
+            }
+            @media (max-width: 399px) {
+                width: 100%;
+            }
+        }
+
+    }
+
+    &.service-page-basic .service-item-info .service-item-main-info {
+        @media (max-width: 1920px) {
+            margin-bottom: 0;
+        }
+
+        .description {
+            @media (max-width: 1199px) {
+                margin-bottom: 0;
+            }
+        }
+
+        .pic {
+            @media (max-width: 1199px) {
+                margin-bottom: 30px;
+            }
+        }
+    }
+}

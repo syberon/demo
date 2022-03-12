@@ -1,0 +1,52 @@
+.basic-direction-item-wrapper {
+	position: relative;
+	flex-grow: 1;
+
+	//начало
+	&:hover {
+		.pic {
+			.fade-layer {
+				animation-name: gray-round;
+				animation-duration: 1s;
+				animation-timing-function: cubic-bezier(0.5, 0.5, 0, 1);
+				animation-fill-mode: forwards;
+				animation-direction: normal;
+			}
+		}
+		.content {
+			.title {
+				opacity: 0.7;
+				transition: 0.2s ease;
+			}
+		}
+	}
+	.pic {
+		position: relative;
+		overflow: hidden;
+		img {
+			width: 100%;
+		}
+		.fade-layer {
+			position: absolute;
+			z-index: 10;
+			top: 30%;
+			right: -10%;
+			width: 280px;
+			height: 280px;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+
+			animation-name: gray-round-reverse;
+			animation-duration: 1s;
+			animation-timing-function: cubic-bezier(0.5, 0.5, 0, 1);
+			animation-fill-mode: forwards;
+			animation-direction: normal;
+			backdrop-filter: grayscale(100%);
+			border-radius: 50%;
+			transform: scale(0);
+			opacity: 0;
+		}
+	}
+	//конец
+}

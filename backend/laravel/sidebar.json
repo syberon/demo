@@ -1,0 +1,153 @@
+{
+    "blocks": [
+        {
+            "name": "Модули",
+            "items": [
+                {
+                    "name": "Структура",
+                    "type": "dropdown",
+                    "icon": "fas fa-list",
+                    "items": [
+                        {
+                            "type": "header",
+                            "name": "Контент"
+                        },
+                        {
+                            "type": "link",
+                            "name": "Разделы",
+                            "icon": "fas fa-sitemap",
+                            "route": "admin.structure.pages.index"
+                        },
+                        {
+                            "type": "link",
+                            "name": "Переменные",
+                            "icon": "fas fa-cogs"
+                        },
+                        {
+                            "type": "link",
+                            "name": "Пользовательский CSS",
+                            "icon": "fab fa-css3"
+                        },
+                        {
+                            "type": "link",
+                            "name": "Шаблоны",
+                            "icon": "fas fa-code"
+                        },
+                        {
+                            "type": "header"
+                        },
+                        {
+                            "type": "link",
+                            "name": "Контентные блоки",
+                            "icon": "fas fa-th-large"
+                        },
+                        {
+                            "type": "header"
+                        },
+                        {
+                            "type": "link",
+                            "name": "Виртуальное меню",
+                            "icon": "fas fa-bars"
+                        },
+                        {
+                            "type": "header",
+                            "name": "SEO"
+                        },
+                        {
+                            "type": "link",
+                            "name": "SEO-данные",
+                            "icon": "fas fa-database"
+                        },
+                        {
+                            "type": "header"
+                        },
+                        {
+                            "type": "link",
+                            "name": "Файл-менеджер",
+                            "icon": "fas fa-file"
+                        }
+                    ]
+                },
+                {
+                    "name": "Веб-формы",
+                    "type": "link",
+                    "icon": "fab fa-wpforms"
+                },
+                {
+                    "name": "Универсальные ленты",
+                    "type": "link",
+                    "icon": "fas fa-th-list"
+                },
+                {
+                    "name": "Слайдеры",
+                    "type": "link",
+                    "icon": "fas fa-film"
+                }
+            ]
+        },
+        {
+            "name": "Система",
+            "items": [
+                {
+                    "name": "Параметры",
+                    "type": "dropdown",
+                    "icon": "fas fa-sliders-h",
+                    "items": [
+                        {
+                            "type": "link",
+                            "name": "Системные",
+                            "icon": "fas fa-cog"
+                        },
+                        {
+                            "type": "link",
+                            "name": "Приложения",
+                            "icon": "fab fa-codepen"
+                        }
+                    ]
+                },
+                {
+                    "name": "Контроль доступа",
+                    "type": "dropdown",
+                    "icon": "fa fa-key",
+                    "items": [
+                        {
+                            "route": "admin.users.index",
+                            "type": "link",
+                            "name": "Пользователи",
+                            "icon": "fas fa-user"
+                        },
+                        {
+                            "type": "link",
+                            "name": "Роли",
+                            "icon": "fas fa-users"
+                        },
+                        {
+                            "type": "header"
+                        },
+                        {
+                            "type": "link",
+                            "name": "Контроллеры",
+                            "icon": "fas fa-cogs"
+                        },
+                        {
+                            "type": "link",
+                            "name": "Ресурсы",
+                            "icon": "fas fa-cubes",
+                            "url": "/"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "Служебные",
+            "items": [
+                {
+                    "name": "Фильтры изображен.",
+                    "type": "link",
+                    "icon": "fas fa-sliders-h"
+                }
+            ]
+        }
+    ]
+}

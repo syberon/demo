@@ -1,0 +1,58 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>Заказ</title>
+</head>
+
+<body>
+<h2>Смета заказа №<?= $this->order->id ?> от <?= $this->date($this->order->date, "d.m.Y") ?></h2>
+
+<? if ($this->order->items): ?>
+
+    <p><strong>Информация о клиенте</strong></p>
+    <p><strong>Ф.И.О.:</strong> <?= $this->order->display_name ?></p>
+    <p><strong>Контактный телефон:</strong> <?= $this->order->phone ?></p>
+    <p><strong>E-mail:</strong> <?= $this->order->email ?></p>
+    <p><strong>Способ доставки:</strong> <?= $this->delivery_method[$this->order->delivery] ?></p>
+    <? if ($this->order->delivery == 1): ?>
+        <p><strong>Город:</strong> <?= $this->order->city ?></p>
+        <p><strong>Индекс:</strong> <?= $this->order->zip_code ?></p>
+        <p><strong>Адрес:</strong> <?= $this->order->address ?></p>
+
+    <? endif ?>
+    <p><strong>Способ оплаты:</strong> <?= $this->payment_method[$this->order->payment] ?></p>
+    <p><strong>Примечание:</strong> <?= $this->order->description ?></p>
+
+    <br><br>
+
+    <table width="100%" border="1" cellspacing="0" cellpadding="5">
+        <tr bgcolor="#dddddd">
+            <td><strong>Наименование</strong></td>
+            <td><strong>Количество</strong></td>
+            <td><strong>Цена за единицу</strong></td>
+            <td><strong>Общая цена, руб.</strong></td>
+        </tr>
+        <? foreach ($this->order->items as $key => $item): ?>
+            <tr>
+                <td>
+                    <?= $item->name ?>
+                    <? if ($item->properties && count($item->properties)): ?>
+                        <div class="options">
+                            <? foreach ($item->properties as $param => $value): ?>
+                                <div><?= $param ?>: <?= $value ?></div>
+                            <?endforeach;?>
+                        </div>
+                    <? endif ?>
+                </td>
+                <td><?= $item->count ?></td>
+                <td><?= $item->price ?> руб.</td>
+                <td><?= ($item->count * $item->price) ?> руб.</td>
+            </tr>
+        <? endforeach ?>
+    </table>
+    <br>
+    <div align="right"><strong>Общая цена: </strong> <?= $this->order->price ?> руб.</div>
+<? endif ?>
+</body>
+</html>

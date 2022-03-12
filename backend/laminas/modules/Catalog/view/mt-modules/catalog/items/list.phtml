@@ -1,0 +1,160 @@
+<?
+$this->inlineScript()->appendScript("window.modules.push('cms/modules/catalog/items.list')");
+?>
+
+<script>
+    let initData = {
+        properties: <?= Laminas\Json\Json::encode($this->properties) ?>,
+        price: <?= Laminas\Json\Json::encode($this->priceRange) ?>,
+        category: <?= $this->category->id ?>,
+        group: <?= $this->group ? "'{$this->group->code}'" : 'null'?>
+    }
+</script>
+
+<div class="catalog-items-list" id="itemsListApp">
+    <div class="top-line" ref="listTop">
+        <div class="category-title"><?= $this->category->name ?></div>
+        <div class="right-block" v-if="show_filter">
+            <div class="order-select">
+                <label>Сортировка:</label>
+                <select class="custom-selectpicker order-select-element" v-model="params.order.value">
+                    <option value="name asc">Названию</option>
+                    <option value="price asc">По возрастанию цены</option>
+                    <option value="price desc">По убыванию цены</option>
+                    <option value="price_discount desc">По размеру скидки</option>
+                    <option value="created desc">Сначала новинки</option>
+                </select>
+            </div>
+            <div class="page-size">
+                <label>Записей на странице:</label>
+                <select class="custom-selectpicker" v-model="params.pageSize">
+                    <option value="16">16</option>
+                    <option value="32">32</option>
+                    <option value="64">64</option>
+                    <option value="128">128</option>
+                </select>
+            </div>
+        </div>
+        <div v-else>
+            <a class="btn btn-show-filters" @click="show_filter = !show_filter" href="Javascript:void(0)">Фильтры</a>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-4 col-lg-3 col-xl-2 filters" v-if="show_filter">
+            <? if (count($this->subCategories)): ?>
+                <ul class="sub-categories">
+                    <? foreach ($this->subCategories as $category): ?>
+                        <li><a href="<?= $this->url('catalogrouter', ['category' => $category->id, 'group' => $this->group?->id]) ?>"><?= $category->name ?></a></li>
+                    <? endforeach ?>
+                </ul>
+            <? endif ?>
+
+            <div class="filter-properties global">
+                <div class="field" v-if="itemsList !== null && Object.keys(itemsList).length">
+                    <div class="title">
+                        <div class="name">
+                            Цена со скидкой
+                        </div>
+                    </div>
+                    <div class="variants">
+                        <div class="slider-price">
+                            <div class="values">
+                                <div class="min">{{ filter.price[0] }}</div>
+                                <div class="max">{{ filter.price[1] }}</div>
+                            </div>
+                            <vue-slider
+                                v-model="filter.price"
+                                :min="priceSlider.min"
+                                :max="priceSlider.max"
+                                :interval="priceSlider.interval"
+                                :tooltip="'none'"
+                                :contained="true"
+                            >
+                            </vue-slider>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div v-for="property_type in ['items', 'offers']">
+                <div v-if="properties[property_type]" :class="[property_type, 'filter-properties']">
+                    <div class="field" v-for="property in properties[property_type]">
+                        <div class="checkbox" v-if="property.type == 'checkbox'">
+                            <div class="input"><input type="checkbox" v-model="filter.properties[property_type][property.code][1]"></div>
+                            <div class="name">{{ property.name }}</div>
+                        </div>
+                        <div v-else>
+                            <div class="title" @click="toggleVariants(property.code)">
+                                <div class="name">
+                                    {{ property.name }}
+                                </div>
+                                <div class="toggle">
+                                    <i class="fas fa-chevron-down"></i>
+                                </div>
+                            </div>
+                            <transition name="slide">
+                                <div class="variants" v-if="filterProperties[property.code]">
+                                    <div class="variant" v-for="value in property.values">
+                                        <div class="input"><input type="checkbox" v-model="filter.properties[property_type][property.code][value]"></div>
+                                        <div class="value">{{ value }}</div>
+                                    </div>
+                                </div>
+                            </transition>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="buttons">
+                <a class="btn btn-light btn-sm btn-apply-filter" @click="generateFilterQuery" href="Javascript:void(0)">Применить</a>
+                <a class="btn btn-light btn-sm btn-clear-filter" @click="clearFilter" href="Javascript:void(0)">Сбросить</a>
+            </div>
+        </div>
+        <div class="col-md-8 col-lg-9 col-xl-10 items">
+            <div class="load-fader" v-if="show_fader"></div>
+            <div class="not-found" v-if="itemsList !== null && !Object.keys(itemsList).length">По заданным вами критериям ничего не найдено. Попробуйте изменить условия поиска.</div>
+            <div class="row">
+                <div class="col-6 col-lg-4 col-xl-3 item" v-for="item in itemsList" :key="item.id">
+                    <a :href="item.link">
+                        <div class="content">
+                            <div class="pic">
+                                <img v-if="item.picture" :src="item.picture" class="img-fluid">
+                                <img v-else src="https://dummyimage.com/300x400/ddd/000.jpg&text=No+photo" class="img-fluid">
+                            </div>
+                            <div class="title">{{ item.name }}</div>
+                            <div class="price">
+                                <div class="main">
+                                    <div class="price">{{ item.price }} руб.</div>
+                                    <div class="price_base" v-if="item.price_sale">{{ item.price_base }} руб.</div>
+                                </div>
+                                <div class="discount" v-if="item.price_sale" >Скидка: {{ item.price_discount }} руб.</div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+            <div class="pages-block">
+                <div class="paginator">
+                    <nav aria-label="Постраничная навигация" v-if="pagination.pages.length > 1">
+                        <ul class="pagination">
+                            <li class="page-item" :class="{ disabled: !pagination.arrows.left }">
+                                <a class="page-link" @click="pageDec" href="Javascript:void(0)"><i class="fas fa-arrow-left"></i></a>
+                            </li>
+                            <li class="page-item" v-if="pagination.pages[0] > 1">
+                                <a class="page-link" @click="pageSet(1)" href="Javascript:void(0)">1</i></a> ...
+                            </li>
+                            <li class="page-item" :class="{ 'active' : page == filter.page}" v-for="page in pagination.pages">
+                                <a class="page-link" @click="pageSet(page)"  href="Javascript:void(0)">{{ page }} </a>
+                            </li>
+                            <li class="page-item" v-if="pagination.pages[pagination.pages.length - 1] < pagination.count">
+                                ... <a class="page-link" @click="pageSet(pagination.count)" href="Javascript:void(0)">{{ pagination.count }}</i></a>
+                            </li>
+                            <li class="page-item" :class="{ disabled: !pagination.arrows.right }">
+                                <a class="page-link" @click="pageInc" href="Javascript:void(0)"><i class="fas fa-arrow-right"></i></a>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

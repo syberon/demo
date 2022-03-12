@@ -1,0 +1,104 @@
+.portfolio-content--text {
+    margin-bottom: 50px;
+    @media (max-width: 1199px) {
+        margin-bottom: 0;
+    }
+
+    .portfolio-item {
+        .portfolio-item-content {
+            .description .project-info .text {
+                height: 300px;
+                max-height: 700px;
+                font-size: 0.9rem;
+                @media (max-width: 1920px) {
+                    height: 300px;
+                    max-height: 700px;
+                }
+                @media (max-width: 1799px) {
+                    height: 270px;
+                    max-height: 620px;
+                }
+                @media (max-width: 1699px) {
+                    height: 250px;
+                    max-height: 590px;
+                }
+                @media (max-width: 1599px) {
+                    height: 230px;
+                    max-height: 550px;
+                }
+                @media (max-width: 1499px) {
+                    height: 200px;
+                    max-height: 530px;
+                }
+                @media (max-width: 1399px) {
+                    height: 170px;
+                    max-height: 450px;
+                }
+                @media (max-width: 1299px) {
+                    height: 150px;
+                    max-height: 400px;
+                }
+                @media (max-width: 1199px) {
+                    height: 120px;
+                    max-height: 300px;
+                }
+                @media (max-width: 991px) {
+                    height: auto;
+                    max-height: unset;
+                    font-size: 1rem;
+                }
+            }
+
+            .gallery {
+                .content {
+                    position: relative;
+                    max-height: 600px;
+                    overflow-y: hidden;
+                    // background-color: $white;
+                    background-image: url("/img/text-bg.jpg");
+                    background-repeat: no-repeat;
+                    background-size: cover;
+                    padding: 80px;
+                    @media (max-width: 1920px) {
+                        max-height: 400px;
+                    }
+
+                    .text-content {
+                        color: $black;
+                        // padding: 80px;
+                        padding-left: 20px;
+                        padding-right: 20px;
+                        text-align: justify;
+                        font-size: 1.2rem;
+                        font-weight: 400;
+                        font-family: "Times New Roman", Times, serif;
+                        border-right: 1px dashed #c74243;
+                        border-left: 1px dashed #c74243;
+                    }
+
+                    .fader-bg {
+                        position: absolute;
+                        bottom: 0;
+                        left: 0;
+                        width: 100%;
+                        height: 200px;
+                        z-index: 10;
+                        background: linear-gradient(0deg, #F5F4F6 25%, rgba(208, 206, 220, 0) 100%);
+                        @media (max-width: 1199px) {
+                            height: 120px;
+                        }
+                        @media (max-width: 991px) {
+                            height: 100px;
+                        }
+                        @media (max-width: 767px) {
+                            height: 60px;
+                        }
+                        @media (max-width: 399px) {
+                            height: 50px;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

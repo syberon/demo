@@ -1,0 +1,14 @@
+<?
+    $this->headTitle("Добавление купона");
+    $this->inlineScript()->appendScript("window.modules.push('cms/modules/catalog/coupons.form')");
+?>
+
+<div class="admin-content-block">
+    <h3>Добавление купона</h3>
+
+    <div class="admin-buttons">
+        <a class="btn btn-light" href="<?= $this->url('catalog/coupons') ?>">Вернуться назад</a>
+    </div>
+
+    <?= $this->form($this->form) ?>
+</div>

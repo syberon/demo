@@ -1,0 +1,49 @@
+<? $this->headTitle("Управление промо-кодами") ?>
+
+<div class="admin-content-block">
+    <h3>Промо-коды</h3>
+    <br>
+    <div id="actions-submenu">
+        <h4>Действия</h4>
+        <div class="list-group">
+            <a class="list-group-item" href="<?= $this->url('catalog/coupons/add') ?>"><i class="fas fa-plus"></i> Добавить код</a>
+        </div>
+    </div>
+
+
+    <div class="table-responsive">
+        <table class="table table-hover table-striped table-coupons">
+            <colgroup>
+                <col class="col-code"/>
+                <col class="col-name"/>
+                <col class="col-type"/>
+                <col class="col-discount-type"/>
+                <col class="col-discount"/>
+                <col class="col-actions"/>
+            </colgroup>
+            <thead>
+                <tr>
+                    <th>Код</th>
+                    <th>Название</th>
+                    <th>Тип купона</th>
+                    <th>Тип скидки</th>
+                    <th>Размер скидки</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <? foreach ($this->records as $item): ?>
+                <tr>
+                    <td><?= $item->code ?></td>
+                    <td><?= $item->name ?></td>
+                    <td><?= $this->types[$item->type] ?></td>
+                    <td><?= $this->discount_types[$item->discount_type] ?></td>
+                    <td><?= $item->discount ?></td>
+                    <td>
+                        <a href="<?= $this->url('catalog/coupons/edit', ['id' => $item->id]) ?>" title="Изменить"><i class="fas fa-pen icon-green"></i></a>
+                        <a href="<?= $this->url('catalog/coupons/delete', ['id' => $item->id]) ?>" title="Удалить" class="confirm"><i class="fas fa-times icon-red"></i></a>
+                    </td>
+                </tr>
+            <? endforeach ?>
+        </table>
+    </div>
+</div>

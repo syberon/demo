@@ -1,0 +1,25 @@
+.bottom-wrapper {
+    margin-top: 120px;
+    padding-bottom: 50px;
+    @media (max-width: $hd) {
+        margin-top: 80px;
+        padding-bottom: 0;
+    }
+    @media (max-width: 1399px) {
+        margin-top: 50px;
+    }
+    @media (max-width: 575px) {
+        margin-top: 20px;
+    }
+
+    .basic-direction-title {
+        margin-bottom: 100px;
+        @media (max-width: 1699px) {
+            margin-bottom: 50px;
+        }
+        @media (max-width: 575px) {
+            margin-bottom: 30px;
+        }
+    }
+}
+

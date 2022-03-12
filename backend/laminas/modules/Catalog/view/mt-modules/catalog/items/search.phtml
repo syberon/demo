@@ -1,0 +1,78 @@
+<?
+$this->inlineScript()->appendScript("window.modules.push('cms/modules/catalog/items.search')");
+?>
+
+<div class="catalog-items-search" id="itemsSearchApp">
+    <div class="top-line">
+        <div class="category-title">Результаты поиска: {{ query }} (всего: {{ searchCount }})</div>
+        <div class="right-block">
+            <div class="order-select">
+                <label>Сортировка:</label>
+                <select class="custom-selectpicker order-select-element" v-model="params.order.value">
+                    <option value="rel desc">Наибольшему совпадению</option>
+                    <option value="name asc">Названию</option>
+                    <option value="price asc">По возрастанию цены</option>
+                    <option value="price desc">По убыванию цены</option>
+                    <option value="price_discount desc">По размеру скидки</option>
+                    <option value="created desc">Сначала новинки</option>
+                </select>
+            </div>
+            <div class="page-size">
+                <label>Записей на странице:</label>
+                <select class="custom-selectpicker" v-model="params.pageSize">
+                    <option value="16">16</option>
+                    <option value="32">32</option>
+                    <option value="64">64</option>
+                    <option value="128">128</option>
+                </select>
+            </div>
+        </div>
+
+    </div>
+    <div class="items">
+        <div class="row">
+            <div class="col-6 col-lg-4 col-xl-3 item" v-for="item in itemsList">
+                <a :href="item.link">
+                    <div class="content">
+                        <div class="pic">
+                            <img v-if="item.picture" :src="item.picture" class="img-fluid">
+                            <img v-else src="https://dummyimage.com/300x400/ddd/000.jpg&text=No+photo" class="img-fluid">
+                        </div>
+                        <div class="title">{{ item.name }}</div>
+                        <div class="price">
+                            <div class="main">
+                                <div class="price">{{ item.price }} руб.</div>
+                                <div class="price_base" v-if="item.price_sale">{{ item.price_base }} руб.</div>
+                            </div>
+                            <div class="discount" v-if="item.price_sale" >Скидка: {{ item.price_discount }} руб.</div>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        </div>
+
+        <div class="pages-block">
+            <div class="paginator">
+                <nav aria-label="Постраничная навигация" v-if="pagination.pages.length > 1">
+                    <ul class="pagination">
+                        <li class="page-item" :class="{ disabled: !pagination.arrows.left }">
+                            <a class="page-link" @click="pageDec" href="Javascript:void(0)"><i class="fas fa-arrow-left"></i></a>
+                        </li>
+                        <li class="page-item" v-if="pagination.pages[0] > 1">
+                            <a class="page-link" @click="pageSet(1)" href="Javascript:void(0)">1</i></a> ...
+                        </li>
+                        <li class="page-item" :class="{ 'active' : page == params.page}" v-for="page in pagination.pages">
+                            <a class="page-link" @click="pageSet(page)"  href="Javascript:void(0)">{{ page }} </a>
+                        </li>
+                        <li class="page-item" v-if="pagination.pages[pagination.pages.length - 1] < pagination.count">
+                            ... <a class="page-link" @click="pageSet(pagination.count)" href="Javascript:void(0)">{{ pagination.count }}</i></a>
+                        </li>
+                        <li class="page-item" :class="{ disabled: !pagination.arrows.right }">
+                            <a class="page-link" @click="pageInc" href="Javascript:void(0)"><i class="fas fa-arrow-right"></i></a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </div>
+</div>
