@@ -1,0 +1,194 @@
+/*!
+ * Copyright (c) 2019.
+ *
+ * @author Syber
+ */
+
+.webform-fields-list {
+    colgroup {
+        .col-handle {
+            width: 50px;
+        }
+
+        .col-required {
+            width: 50px;
+        }
+
+        .col-name {
+            width: 500px;
+        }
+
+        .col-type {
+            width: 200px;
+        }
+
+        .col-action {
+            width: 60px;
+        }
+    }
+
+    .handle {
+        cursor: move;
+    }
+}
+
+
+.webforms {
+    .list {
+        colgroup {
+            .col-id {
+                width: 100px;
+            }
+
+            .col-action {
+                width: 170px;
+            }
+        }
+
+        i.fas {
+            font-size: 1.2rem;
+            padding: 0px 3px;
+        }
+    }
+}
+
+
+#webformConstructor {
+    .title {
+        text-align: center;
+        font-weight: 600;
+        font-size: 1.6rem;
+        padding-bottom: 15px;
+    }
+
+    .save-button {
+        padding-top: 50px;
+        text-align: right;
+    }
+
+    .form-fields {
+        .item {
+            display: flex;
+            justify-content: space-between;
+            border: #999 1px solid;
+            padding: 10px;
+            margin-bottom: 10px;
+            font-size: 1rem;
+            &.used {
+                background: #b0f9ff;
+            }
+        }
+    }
+
+    .constructor {
+        .buttons {
+            .btn-delete {
+                color: #cc0000;
+                display: block;
+            }
+            .btn-edit {
+                color: #0000cc;
+                display: block;
+            }
+            .btn-add {
+                color: #00cc00;
+                display: block;
+            }
+        }
+
+        .add-row-button {
+            text-align: right;
+        }
+
+        .constructor-row {
+            padding: 10px 40px;
+            margin-bottom: 20px;
+            background: #eee;
+            margin-left: 0px;
+            margin-right: 0px;
+            min-height: 100px;
+            position: relative;
+            .row-buttons {
+                display: none;
+                position: absolute;
+                right: -5px;
+                width: 50px;
+                padding: 0px 10px;
+                text-align: center;
+            }
+
+            &:hover {
+                .row-buttons {
+                    display: block;
+                }
+            }
+            &:before {
+                font-family: 'Font Awesome 5 Free', serif;
+                font-weight: 900;
+                content: "\f362";
+                transform: rotate(90deg);
+                cursor: move;
+                position: absolute;
+                padding: 0px 10px;
+                text-align: center;
+                left: 0px;
+            }
+
+
+            .constructor-col {
+                border: #aaa 1px solid;
+                background: #fff;
+                padding: 0px 5px 5px;
+
+                .info {
+                    width: 100%;
+                    .name {
+                        color: #aaa;
+                        font-size: 0.7rem;
+                    }
+                    .value {
+                        font-size: 0.9rem;
+                    }
+                }
+
+                .field-block {
+                    display: flex;
+                    justify-content: flex-end;
+                    .field {
+                        width: 100%;
+                        padding: 10px;
+                        display: flex;
+                        justify-content: space-between;
+                        background: #b0f9ff;
+                        border: #999 3px solid;
+                        .field-buttons {
+                            display: none;
+                        }
+                    }
+                    .content {
+                        width: 100%;
+                        text-align: left;
+                    }
+                    .col-buttons {
+                        visibility: hidden;
+                        width: 30px;
+                        text-align: center;
+                    }
+                }
+                &:hover {
+                    .field-block {
+                        .field {
+                            .field-buttons {
+                                display: block;
+                            }
+                        }
+                        .col-buttons {
+                            visibility: visible;
+                        }
+                    }
+                }
+            }
+
+        }
+    }
+}

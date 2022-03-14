@@ -1,0 +1,31 @@
+/*
+ * Copyright (c) 2019.
+ *
+ * @author Syber
+ */
+
+.feedback-sortable {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    li {
+        cursor: move;
+        display: block;
+        margin: 5px 0px;
+        padding: 15px;
+        font-size: 1.2em;
+        line-height: 1.2em;
+        transition: background 0.5s ease;
+        &.ui-state-highlight {
+            height: 50px;
+        }
+
+        &:hover {
+            background: #ddd;
+        }
+    }
+}
+
+.feedback-form {
+    width: 700px;
+}

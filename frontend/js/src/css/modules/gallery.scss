@@ -1,0 +1,38 @@
+/*
+ * Copyright (c) 2019.
+ *
+ * @author Syber
+ */
+
+.gallery {
+    .category {
+        margin-bottom: 50px;
+        .title {
+            background: #eee;
+            padding: 10px;
+        }
+        .content {
+            margin-top: 10px;
+        }
+        .picture-form {
+            display: none;
+            background: #eee;
+            padding: 10px;
+        }
+    }
+    .pictures {
+        .item {
+            position: relative;
+            img {
+                width: 100%;
+                border-right: transparent 1px solid;
+                border-bottom: transparent 1px solid;
+            }
+            a.btn {
+                position: absolute;
+                bottom: 10px;
+                right: 10px;
+            }
+        }
+    }
+}

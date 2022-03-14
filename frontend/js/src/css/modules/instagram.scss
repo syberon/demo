@@ -1,0 +1,20 @@
+/*!
+ * Copyright (c) 2019.
+ *
+ * @author Syber
+ */
+
+.instagram-list {
+    margin-top: 50px;
+
+    .item {
+        margin-bottom: 100px;
+
+        .pic {
+            width: 100%;
+            min-height: 350px;
+            background-size: cover;
+            background-position: top center;
+        }
+    }
+}
